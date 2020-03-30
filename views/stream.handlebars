@@ -1,0 +1,125 @@
+<div class="header">
+    <h1 class="frontpage">
+        FANS CHOICE
+    </h1>
+
+
+    <form method="post">
+        <button formaction="/logout" class="pure-button button-small">logout</button></center>
+        <button formaction="/user/{{ stream_name }}/follow" class="pure-button button-secondary button-small cmd-follow"
+            {{#unless can_follow }} disabled{{/unless}}>follow</a>
+            <button formaction="/user/{{ stream_name }}/unfollow"
+                class="pure-button button-warning button-small cmd-unfollow" {{#unless can_unfollow }}
+                disabled{{/unless}}>unfollow</a>
+    </form>
+</div>
+
+<div id="demo" class="carousel slide content pure-g" style="height: 39vh" data-ride="carousel">
+    <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+    </ul>
+    <div class=" carousel-inner">
+        <div class="carousel-item active">
+            <!-- HERE -->
+            <img src="/ny.jpg" alt=" Los Angeles" width="1100" height="500">
+            <div class="carousel-caption">
+                <h3>Los Angeles</h3>
+                <p>We had such a great time in LA!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <!-- HERE -->
+            <img src="/Users/b/Projects/School/CSC33600/project/fanschoice/ny.jpg" alt="Chicago" width="1100"
+                height="500">
+            <div class="carousel-caption">
+                <h3>Chicago</h3>
+                <p>Thank you, Chicago!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <!-- HERE -->
+            <img src="ny.jpg" alt="New York" width="1100" height="500">
+            <div class="carousel-caption">
+                <h3>New York</h3>
+                <p>We love the Big Apple!</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>
+
+<div class="content pure-g">
+    <div class="pure-u-1-5" style="height: 79vh;">
+        <form class="pure-form" style="height: 39vh;" method="post" action="/follow">
+            <fieldset style="padding-right: 1em">
+                <legend>Following</legend>
+                <!--<input name="follow" placeholder="User Name" style="width: 100%">
+                <input id="follow" class="pure-button button-secondary" type="submit" value="+ Follow" style="width: 100%">-->
+                <ul class="list-user">
+                    {{#each followees}}
+                    <li class="item-user pure-g">
+                        <div class="pure-u-1 pure-u-md-4-5">
+                            <a style="" href="/user/{{ name }}">{{ displayname }} <small>@{{ name }}</small></a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </fieldset>
+        </form>
+
+        <form class="pure-form" style="height: 39vh;">
+            <fieldset style="padding-right: 1em">
+                <legend>Followers</legend>
+                <ul class="list-user">
+                    {{#each followers}}
+                    <li class="item-user">
+                        <a href="/user/{{ name }}">{{ displayname }} <small>@{{ name }}</small></a>
+                    </li>
+                    {{/each}}
+                </ul>
+            </fieldset>
+        </form>
+    </div>
+    <form class="pure-u-4-5 pure-form" method="post" action="/post">
+        <fieldset class="pure-g" style="padding-left: 3em;">
+            {{#if is_own_stream}}
+            <legend class="pure-u-1">The haps</legend>
+            <input name="twizzle" class="pure-u-4-5" placeholder="blah blah blah">
+            <input id="twizzle" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
+            {{/if}}
+
+            <div class="stream" style="overflow-y: auto;">
+                {{#each stream}}
+                <div class="pure-u-1 twizzle">
+                    <div class="user-info">
+                        <span class="displayname">{{ displayname }}</span>
+                        <a href="/user/{{ name }}" style="text-decoration: none"><span
+                                class="name info"><small>(@{{ name }})</small></span></a>
+                        <span class="when info">{{ posted }}</span>
+                    </div>
+                    <div class="twizzle-content">
+                        {{ content }}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+
+
+
+
+
+
+<script>
+    $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
+</script>

@@ -1,0 +1,69 @@
+<div>
+    <h1 class="frontpage">FANS CHOICE</h1>
+    <h2>THE FANS ARE ALWAYS RIGHT</h2>
+
+
+</div>
+<div style="display:inline-flex">
+    <div class="content">
+        <form class="" method="post">
+            <fieldset>
+                <legend>
+                    Login
+                </legend>
+                <label for="user">User Name</label>
+                <select name="user">
+                    {{#each results}}
+                    <option value="{{ name }}">{{ name }}</option>
+                    {{/each}}
+                </select>
+                <button type="submit" class="pure-button pure-button-primary button-style2">
+                    Sign in
+                </button>
+            </fieldset>
+        </form>
+
+        <form id="create-user" class="pure-form-stacked" style="padding-top: 23px;" action="/api/user" method="post">
+            <fieldset>
+                <legend>
+                    Sign Up
+                </legend>
+                <label for="name">User Name</label>
+                <input id="name" type="text" name="user_name" placeholder="New User Name" required>
+                <label for="name">Display Name</label>
+                <input id="name" type="text" name="display_name" placeholder="New Display Name" required>
+                <span class="pure-form-message warn warn-unknown">
+                    An error occurred.
+                </span>
+                <span class="pure-form-message warn warn-exists">
+                    A user with that name already exists.
+                </span>
+                <button type="submit" class="pure-button pure-button-primary button-style">
+                    Create User
+                </button>
+            </fieldset>
+        </form>
+    </div>
+
+    <div>
+        <h3 class="content">Sign up, comment, and review on Fan's Choice, the premiere web app for up to date music
+            news. Optional Text goes here...... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+            ullamco
+            laboris nisi ut aliquip ex e commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+            esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.</h3>
+    </div>
+</div>
+
+<script>
+    var params = new URLSearchParams(window.location.search);
+    if (params.has('error')) {
+        if (params.get('error') === 'user_exists') {
+            $("#create-user").addClass('error-user-exists');
+        } else {
+            $("#create-user").addClass('error-unknown');
+        }
+    }
+</script>
