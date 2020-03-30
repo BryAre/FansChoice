@@ -29,7 +29,10 @@ app.use(express.static('static'));
 // In a production environment, the following line would be uncommented,
 // but for our purposes unencrypted cookies are fine.
 // app.use(session({ secret: 'csc336', cookie: { secure: true } }));
-app.use(session({ secret: 'csc336' }));
+app.use(session({ 
+    secret: 'csc336',
+    resave: true,
+    saveUninitialized: true }));
 // (You can "hack" the website by editing your session cookie from the web-developer toolbar and setting `user_id` to a different user id.)
 
 // Parse urlencoded data out of form submissions
