@@ -15,7 +15,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'topline99',
     database: 'twizzle',
     multipleStatements: true,
     // A `connectionLimit` of 4 works nicely on my machine.  YMMV.
