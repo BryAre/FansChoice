@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="header">
+    <h1 class="frontpage">
+        FANS CHOICE
+    </h1>
+    <br />
+    <form method="post">
+        <button formaction="/logout" class="pure-button button-small">logout</button>
+
+        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
+        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
+
+        <button formaction="/user/{{ stream_name }}/follow" class="pure-button button-secondary button-small cmd-follow"
+            {{#unless can_follow }} disabled{{/unless}}>follow</a>
+            <button formaction="/user/{{ stream_name }}/unfollow"
+                class="pure-button button-warning button-small cmd-unfollow" {{#unless can_unfollow }}
+                disabled{{/unless}}>unfollow</a>
+
+    </form>
+</div>
+
+<section class="portfolio-block photography">
+    <div class="container">
+        <div style="margin: 10vh" class="rowH">
+
+        </div>
+    </div>
+    <br /><br />
+</section>
+
+<section>
+    <p style="text-align: center; font-size: 50px;" ;>
+        HELLO BRYAN.
+    </p>
+</section>
+
+
+<script>
+    $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
+</script>

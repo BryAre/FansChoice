@@ -29,10 +29,11 @@ app.use(express.static('static'));
 // In a production environment, the following line would be uncommented,
 // but for our purposes unencrypted cookies are fine.
 // app.use(session({ secret: 'csc336', cookie: { secure: true } }));
-app.use(session({ 
+app.use(session({
     secret: 'csc336',
     resave: true,
-    saveUninitialized: true }));
+    saveUninitialized: true
+}));
 // (You can "hack" the website by editing your session cookie from the web-developer toolbar and setting `user_id` to a different user id.)
 
 // Parse urlencoded data out of form submissions
@@ -47,6 +48,7 @@ app.set('view engine', 'handlebars');
 /* End of configuration */
 
 const query_users = 'SELECT name FROM users ORDER BY name;';
+const query_userName = 'SELECT userName FROM users ORDER BY userName;';
 const query_followers = 'SELECT * FROM follows JOIN users ON source = id WHERE target = get_user_id_from_name(?) ORDER BY updated, name;';
 const query_followees = 'SELECT * FROM follows JOIN users ON target = id WHERE source = get_user_id_from_name(?) ORDER BY updated, name;';
 
@@ -158,14 +160,50 @@ app.post('/login', debuglog, db, function (req, res) {
     });
 });
 
+app.get('/songs', debuglog, db, function (req, res) {
+    res.render('songs');
+
+});
+
+app.post('/songs', debuglog, db, function (req, res) {
+
+    res.redirect('/songs');
+
+});
+
+app.get('/stream', debuglog, db, function (req, res) {
+    res.render('stream');
+
+});
+
+app.post('/stream', debuglog, db, function (req, res) {
+
+    res.redirect('/stream');
+
+});
+
+app.get('/profile', debuglog, db, function (req, res) {
+    res.render('profile');
+
+});
+
+app.post('/profile', debuglog, db, function (req, res) {
+
+    res.redirect('/profile');
+
+});
+
 app.post('/logout', debuglog, function (req, res) {
     delete req.session.user_id;
     res.redirect('/login');
 });
 
+
 app.get('/', debuglog, db, checkAuth, function (req, res) {
     res.redirect(`/user/${req.session.user_name}`);
 });
+
+
 
 app.get('/user/:name', debuglog, db, function (req, res) {
     // Is the user visiting thier own stream?
@@ -246,6 +284,11 @@ app.post('/api/user', debuglog, db, function (req, res) {
 app.get('/error', debuglog, db, function (req, res) {
     res.render('error', { error: req.query.type === 'preview' ? 'Cannot preview.' : 'Unknown error.' });
 });
+
+
+
+
+
 
 app.listen(3000);
 

@@ -9,3 +9,5 @@
 4) Go to [http://localhost:3000](http://localhost:3000)
 
 To run the `social.sql` script you can try `mysql -uUSERNAME -p < /PATH/TO/social.sql` or from the mysql command line try `source ./PATH/TO/social.sql`.
+Can also try mysql -u root -p fanschoice < FansChoice.sql, you should cd to where SQL file is and next to p is name of database. Create database by going to Mariadb and doing Create DATABASENAME; 
+

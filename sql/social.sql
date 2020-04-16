@@ -85,7 +85,7 @@ CREATE VIEW follows AS
     SELECT G.source, G.target, G.is_following, R.most_recent as updated
         FROM most_recent_graph_events R
         JOIN social_graph G ON R.id = G.id AND R.most_recent = G.updated
-        WHERE G.is_following = TRUE;
+        WHERE G.is_following = true;
 
  -- notice we use `IS NULL` instead of `= NULL`.
 CREATE VIEW stream AS
