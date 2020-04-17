@@ -253,3 +253,16 @@ justify-content: flex-start;
     color: Orange;
   }
 
+
+  .green_button {
+    color:green; 
+    background:transparent; 
+    border: 0
+  }
+
+  .red_button {  
+   
+    color:red; 
+    background:transparent; 
+    border: 0
+  }
