@@ -40,18 +40,34 @@
     
 
 
-<div id="TestsDiv" style="display: none;">
+<div id="TestsDiv" >
     <h1>Artist</h1>
     <select class="main-text">
-                    {{#each artist}}
-                    <option value="{{ genre }}">{{ genre }}</option>
+                    {{#each album}}
+                    <option value="{{ name }}">{{ name }}</option>
                     {{/each}}
                 </select>
     <h1>Albums</h1>
+        <select class="main-text">
+            {{#each album}}
+            <option value="{{ name }}">{{ name }}</option>
+            {{/each}}
+            </select>
 
     <h1>Songs</h1>
 
+    <select class="main-text">
+            {{#each song}}
+            <option value="{{ name }}">{{ name }}</option>
+            {{/each}}
+            </select>
+
     <h1>Reviews/Rating</h1>
+    <select class="main-text">
+            {{#each email}}
+            <option value="{{ email }}">{{ email }}</option>
+            {{/each}}
+            </select>
 
 </div>
 
