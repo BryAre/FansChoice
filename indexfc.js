@@ -36,6 +36,8 @@ const query_albums = 'SELECT name FROM album; ';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id;';
 
 
+
+
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
         res.redirect(302, '/login');
@@ -176,6 +178,7 @@ app.get('/user/:name', debuglog, db, function(req, res) {
     });
 });
 
+
 app.get('/search', debuglog, db, function (req, res) {
     query_chain(req.connection, [
         [query_artist, [req.params.name]],
@@ -200,7 +203,6 @@ app.get('/search', debuglog, db, function (req, res) {
  app.post('/search', debuglog, db, function (req, res) {
     res.redirect('/search');
 });
-
 
 app.post('/post', debuglog, db, checkAuth, function(req, res) {
     req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
