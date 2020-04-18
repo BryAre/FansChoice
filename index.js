@@ -5,6 +5,7 @@ const hb = require('express-handlebars');
 const app = express();
 const mysql = require('mysql');
 
+
 /* Configuration */
 // You can configure the app by changing the values of the global variables in this block.
 // A more sophisticated way of dealing with configuration options is command line arguments,
@@ -48,7 +49,6 @@ app.set('view engine', 'handlebars');
 /* End of configuration */
 
 const query_users = 'SELECT name FROM users ORDER BY name;';
-const query_userName = 'SELECT userName FROM users ORDER BY userName;';
 const query_followers = 'SELECT * FROM follows JOIN users ON source = id WHERE target = get_user_id_from_name(?) ORDER BY updated, name;';
 const query_followees = 'SELECT * FROM follows JOIN users ON target = id WHERE source = get_user_id_from_name(?) ORDER BY updated, name;';
 
@@ -193,6 +193,7 @@ app.post('/profile', debuglog, db, function (req, res) {
 
 });
 
+
 app.get('/search', debuglog, db, function (req, res) {
     // The `query_users` variable holds a query which returns a list of all of the site's users.
     req.connection.query(query_users, (error, results, fields) => {
@@ -207,9 +208,7 @@ app.get('/search', debuglog, db, function (req, res) {
 });
 
  app.post('/search', debuglog, db, function (req, res) {
-
     res.redirect('/search');
-
 });
 
 

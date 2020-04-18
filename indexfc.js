@@ -30,7 +30,12 @@ const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_user_id_from_email = 'SELECT id FROM user WHERE email = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
+const query_artist = 'SELECT name from artist;' 
 const query_post_revA = 'INSERT INTO reviewAlbum (userID, content) VALUES (?, ?);';
+const query_albums = 'SELECT album.name FROM artist,album WHERE album.artistid = artist.id AND artist.name = ?;';
+const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id AND artist.name = ?;';
+
+
 
 
 function checkAuth(req, res, next) {
@@ -108,6 +113,41 @@ app.post('/login', debuglog, db, function (req, res) {
     });
 });
 
+
+
+app.get('/songs', debuglog, db, function (req, res) {
+    res.render('songs');
+
+});
+
+app.post('/songs', debuglog, db, function (req, res) {
+
+    res.redirect('/songs');
+
+});
+
+app.get('/stream', debuglog, db, function (req, res) {
+    res.render('stream');
+
+});
+
+app.post('/stream', debuglog, db, function (req, res) {
+
+    res.redirect('/stream');
+
+});
+
+app.get('/profile', debuglog, db, function (req, res) {
+    res.render('profile');
+
+});
+
+app.post('/profile', debuglog, db, function (req, res) {
+
+    res.redirect('/profile');
+
+});
+
 app.post('/logout', debuglog, function (req, res) {
     delete req.session.user_id;
     res.redirect('/login');
@@ -139,6 +179,30 @@ app.get('/user/:name', debuglog, db, function(req, res) {
 });
 
 
+app.get('/search', debuglog, db, function (req, res) {
+    query_chain(req.connection, [
+        [query_artist, [req.params.name]],
+        [query_albums, [req.params.name]],
+        [query_song, [req.params.name]]
+    
+    ]).then(([artist]) => {
+        let result = {
+            artist,
+            artist_name: req.params.name,
+            albums: req.params.name,
+            songs: req.params.name
+        };
+        res.render('search', result);
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });
+});
+
+ app.post('/search', debuglog, db, function (req, res) {
+    res.redirect('/search');
+});
+
 app.post('/post', debuglog, db, checkAuth, function(req, res) {
     req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
         if (error) {
@@ -169,4 +233,3 @@ app.get('/error', debuglog, db, function(req, res) {
 });
 
 app.listen(3000);
-

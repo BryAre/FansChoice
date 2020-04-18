@@ -25,9 +25,9 @@
     </p>
     <label for="user">Artists</label>
     <br/>
-                <label for="user">Artists</label>
+    <div>
                 <select id='test' name="user" class="main-text">
-                    {{#each results}}
+                    {{#each artist}}
                     <option value="{{ name }}">{{ name }}</option>
                     {{/each}}
                 </select>
@@ -35,9 +35,18 @@
                     Search
                 </button>
 
+                
+</div>
+    
+
+
 <div id="TestsDiv" style="display: none;">
     <h1>Artist</h1>
-    <h2>{{results}}</h2>
+    <select class="main-text">
+                    {{#each artist}}
+                    <option value="{{ genre }}">{{ genre }}</option>
+                    {{/each}}
+                </select>
     <h1>Albums</h1>
 
     <h1>Songs</h1>
