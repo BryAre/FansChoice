@@ -49,36 +49,34 @@ Create Table user(
 ALTER TABLE user AUTO_INCREMENT=1200;
 
 
-DROP TABLE IF EXISTS reveiwAlbum;
-Create Table reveiwAlbum(
+DROP TABLE IF EXISTS reviewAlbum;
+Create Table reviewAlbum(
     RA_ID INTEGER Primary Key AUTO_INCREMENT,
     userID INTEGER,
     albumID INTEGER references album(albumid),
     posted DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     content VARCHAR(256),
-    score INTEGER ,
     deleted DATETIME,
-    BrokenRecord Boolean,
+    liked Boolean,
     Foreign Key (userID) references user(id)
         ON DELETE Set NUll
 );
-ALTER TABLE reveiwAlbum AUTO_INCREMENT=10100;
+ALTER TABLE reviewAlbum AUTO_INCREMENT=10100;
 
 
-DROP TABLE IF EXISTS reveiwSingle ;
-Create Table reveiwSingle(
+DROP TABLE IF EXISTS reviewSingle ;
+Create Table reviewSingle(
     RA_IS INTEGER Primary Key AUTO_INCREMENT,
     userID INTEGER,
     singleID INTEGER references single(singleid),
     posted DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     content VARCHAR(256),
     deleted DATETIME,
-    score INTEGER ,
-    BrokenRecord Boolean,
+    liked Boolean,
     Foreign Key (userID) references user(id)
         ON DELETE Set NUll
 );
-ALTER TABLE reveiwSingle AUTO_INCREMENT=10010;
+ALTER TABLE reviewSingle AUTO_INCREMENT=10010;
 
 DROP TABLE IF EXISTS picture;
 Create Table picture(
@@ -87,6 +85,16 @@ Create Table picture(
     caption VARCHAR(128),
     url VARCHAR(256)
 );
+
+-- Functions
+DELIMITER $$
+CREATE FUNCTION get_user_id_from_name(un VARCHAR(128))
+RETURNS INTEGER
+DETERMINISTIC
+BEGIN
+    RETURN (SELECT id FROM user WHERE userName=un);
+END $$
+
 
 -- Artist Insertions
 INSERT INTO artist VALUES(00001,'Lil Uzi Vert', 'Rap', '07-31-1994', 'American' );
@@ -138,18 +146,40 @@ INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('md123','2020-
 INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('rickwtm72','2017-01-02 04:03:02',0,'jerrysucksballs@gmail.com');
 
 -- review album insertions 
-INSERT INTO reveiwAlbum (userID, albumID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='rickwtm72'),00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',9,false);
-INSERT INTO reveiwAlbum (userID, albumID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='rickwtm72'),00021,'2020-03-29 05:25:13','Amazing album!! Reminds me of the Old Weeknd!',10,false);
-INSERT INTO reveiwAlbum (userID, albumID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='bryan123'),00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',7,false);
-INSERT INTO reveiwAlbum (userID, albumID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='bryan123'),00022,'2020-03-24 09:13:38','Couldve been better! Some of the beats sound repetitive',6,false);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('rickwtm72'),00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',true);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('ali123'),00020,'2020-03-28 02:02:01','soooooooooo goooooood',true);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('rickwtm72'),00020,'2020-03-30 02:02:01','BABY PLUTOOO!',true);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('rickwtm72'),00021,'2020-03-29 05:25:13','Amazing album!! Reminds me of the Old Weeknd!',true);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('bryan123'),00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',true);
+INSERT INTO reviewAlbum (userID, albumID, posted, content, liked) VALUES(get_user_id_from_name('bryan123'),00022,'2020-03-24 09:13:38','Couldve been better! Some of the beats sound repetitive',true);
+
 -- -- review single insertions 
-INSERT INTO reveiwSingle (userID, singleID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='ali123'),00042,'2020-04-09 01:30:27','Nice Song to Dance to. Its a good song before the album releases.',7,false);
-INSERT INTO reveiwSingle (userID, singleID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='ali123'),00045,'2020-02-04 02:35:16','Lyrics are kinda basic. Was expecting more!',5,true);
-INSERT INTO reveiwSingle (userID, singleID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='md123'),00046,'2020-04-03 07:16:23','Not Really Enjoyable. The song seems poorly produced.',4,true);
-INSERT INTO reveiwSingle (userID, singleID, posted, content,score, BrokenRecord) VALUES((SELECT id FROM user WHERE userName='md123'),00043,'2020-03-04 09:45:04','Decent Song. Beat sounds good, but vocals could be better.',6,false);
+INSERT INTO reviewSingle (userID, singleID, posted, content, liked) VALUES(get_user_id_from_name('ali123'),00042,'2020-04-09 01:30:27','Nice Song to Dance to. Its a good song before the album releases.',true);
+INSERT INTO reviewSingle (userID, singleID, posted, content, liked) VALUES(get_user_id_from_name('ali123'),00045,'2020-02-04 02:35:16','Lyrics are kinda basic. Was expecting more!',false);
+INSERT INTO reviewSingle (userID, singleID, posted, content, liked) VALUES(get_user_id_from_name('md123'),00046,'2020-04-03 07:16:23','Not Really Enjoyable. The song seems poorly produced.',false);
+INSERT INTO reviewSingle (userID, singleID, posted, content, liked) VALUES(get_user_id_from_name('md123'),00043,'2020-03-04 09:45:04','Decent Song. Beat sounds good, but vocals could be better.',false);
 
 CREATE VIEW stream AS
     SELECT RA_ID, stream_id,userName, email, content, posted FROM
         ((SELECT RA_ID, user.id AS stream_id, email, userName, content, posted
-            FROM reveiwAlbum
-            JOIN user ON reveiwAlbum.userID = user.id)) T;
+            FROM reviewAlbum
+            JOIN user ON reviewAlbum.userID = user.id)) T;
+
+Create VIEW albumlikestotal AS
+    select album.albumid,album.name,reviewAlbum.liked from album,reviewAlbum where album.albumid = reviewAlbum.albumID;
+
+-- use this table for top albums
+
+CREATE VIEW sumlikesalbum AS 
+    select albumid, name, sum(liked) as Total from albumlikestotal GROUP BY name;
+
+Create VIEW singlelikestotal AS
+    select single.singleid,single.name,reviewSingle.liked from single,reviewSingle where single.singleid = reviewSingle.singleID;
+
+-- use this table for top singles
+CREATE VIEW sumlikessingle AS 
+    select singleid, name, sum(liked) as Total from singlelikestotal GROUP BY name;
+
+-- 
+
+
