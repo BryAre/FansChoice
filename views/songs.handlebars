@@ -7,17 +7,10 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-
         <button formaction="/profile" class="pure-button button-small">PROFILE</button>
         <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
-
-        <button formaction="/user/{{ stream_name }}/follow" class="pure-button button-secondary button-small cmd-follow"
-            {{#unless can_follow }} disabled{{/unless}}>follow</a>
-            <button formaction="/user/{{ stream_name }}/unfollow"
-                class="pure-button button-warning button-small cmd-unfollow" {{#unless can_unfollow }}
-                disabled{{/unless}}>unfollow</a>
-
+        <button formaction="/search" class="pure-button button-small">Search</button>
     </form>
 </div>
 

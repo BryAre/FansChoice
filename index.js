@@ -193,13 +193,20 @@ app.post('/profile', debuglog, db, function (req, res) {
 
 });
 
-
 app.get('/search', debuglog, db, function (req, res) {
-    res.render('search');
-
+    // The `query_users` variable holds a query which returns a list of all of the site's users.
+    req.connection.query(query_users, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing `query_users`.', error);
+            res.render('error', { error });
+        } else {
+            // We pass the list of users to the `login` template to populate the drop down.
+            res.render('search', { results });
+        }
+    });
 });
 
-app.post('/search', debuglog, db, function (req, res) {
+ app.post('/search', debuglog, db, function (req, res) {
 
     res.redirect('/search');
 
