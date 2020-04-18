@@ -193,6 +193,19 @@ app.post('/profile', debuglog, db, function (req, res) {
 
 });
 
+
+app.get('/search', debuglog, db, function (req, res) {
+    res.render('search');
+
+});
+
+app.post('/search', debuglog, db, function (req, res) {
+
+    res.redirect('/search');
+
+});
+
+
 app.post('/logout', debuglog, function (req, res) {
     delete req.session.user_id;
     res.redirect('/login');
