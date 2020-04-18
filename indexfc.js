@@ -9,7 +9,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
-    password : 'password',
+    password : 'Rayan1234',
     database : 'fanschoice',
     multipleStatements : true,
     connectionLimit : 4
@@ -25,9 +25,13 @@ app.engine('handlebars', hb({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 const query_users = 'SELECT userName FROM user ORDER BY userName;';
-const query_stream = 'SELECT * FROM stream WHERE stream_id = SELECT id FROM user WHERE userName=(?)ORDER BY posted DESC;';
+const query_stream = 'SELECT * FROM stream WHERE stream_id = get_user_id_from_name(?) ORDER BY posted DESC;';
 const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
+const query_user_id_from_email = 'SELECT id FROM user WHERE email = ?;';
+const query_emails = 'SELECT email FROM user ORDER BY email;';
+const query_post_revA = 'INSERT INTO reviewAlbum (userID, content) VALUES (?, ?);';
+
 
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
@@ -53,7 +57,6 @@ function db(req, res, next) {
                 next();
             }
         } finally {
-            // We are done with the connection, so we release it back to the pool to allow someone else to use it.
             connection.release();
         }
     });
@@ -95,7 +98,6 @@ app.post('/login', debuglog, db, function (req, res) {
         } else {
             if (result.length && result[0].id) {
                 req.session.user_id = result[0].id;
-                console.debug(result[0] + " HEYYYYYYYYYYYYYYY/n LOOOOK HEEEEEEEEEERRRRRREEEE");
                 req.session.user_name = req.body.user;
                 res.redirect(`/user/${req.session.user_name}`);
 
@@ -121,18 +123,10 @@ app.get('/user/:name', debuglog, db, function(req, res) {
     console.log(req.params.name, req.session.user_name, req.params.name === req.session.user_name);
     query_chain(req.connection, [
         [query_stream, [req.params.name]],
-        [query_followees, [req.params.name]],
-        [query_followers, [req.params.name]]
-    ]).then(([stream, followees, followers]) => {
-        let is_following = followers.find(e => { return e.name == req.session.user_name }) !== undefined;
-        let can_follow = !is_own_stream && !is_following;
-        let can_unfollow = is_following;
+    
+    ]).then(([stream]) => {
         let result = {
-            stream,
-            followees,
-            followers,
-            can_follow,
-            can_unfollow,
+            stream,  
             is_own_stream,
             stream_name: req.params.name,
             user_name: req.session.user_name
@@ -144,31 +138,9 @@ app.get('/user/:name', debuglog, db, function(req, res) {
     });
 });
 
-app.post('/user/:name/follow', debuglog, db, checkAuth, function(req, res) {
-    console.log(req.session.user_id, req.params.name);
-    req.connection.query(query_follow, [req.session.user_id, req.params.name], (error, result, fields) => {
-        if (error) {
-            console.error('Error following user:', error);
-            res.redirect(500, '/?error=unknown');
-            return;
-        }
-        res.redirect(302, `/user/${ req.params.name }`);
-    });
-});
-
-app.post('/user/:name/unfollow', debuglog, db, checkAuth, function(req, res) {
-    req.connection.query(query_unfollow, [req.session.user_id, req.params.name], (error, result, fields) => {
-        if (error) {
-            console.error('Error unfollowing user:', error);
-            res.redirect(500, '/?error=unknown');
-            return;
-        }
-        res.redirect(302, `/user/${ req.params.name }`);
-    });
-});
 
 app.post('/post', debuglog, db, checkAuth, function(req, res) {
-    req.connection.query(query_post_twizzle, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
+    req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
         if (error) {
             res.render('error', { error });
         } else {
@@ -177,12 +149,13 @@ app.post('/post', debuglog, db, checkAuth, function(req, res) {
     });
 });
 
+
 app.post('/api/user', debuglog, db, function(req, res) {
     if (!req.body) {
         res.redirect(500, '/login?error=unknown');
     }
 
-    req.connection.query(query_create_user, [req.body.user_name, req.body.display_name], (error, result, fields) => {
+    req.connection.query(query_create_user, [req.body.user_name, req.body.display_name], (error, result, fields) => { // works
         if (error) {
             res.redirect(500, '/login?error=unknown');
             return;
