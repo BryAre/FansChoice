@@ -15,7 +15,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'topline99',
     database: 'twizzle',
     multipleStatements: true,
     // A `connectionLimit` of 4 works nicely on my machine.  YMMV.
@@ -192,6 +192,19 @@ app.post('/profile', debuglog, db, function (req, res) {
     res.redirect('/profile');
 
 });
+
+
+app.get('/search', debuglog, db, function (req, res) {
+    res.render('search');
+
+});
+
+app.post('/search', debuglog, db, function (req, res) {
+
+    res.redirect('/search');
+
+});
+
 
 app.post('/logout', debuglog, function (req, res) {
     delete req.session.user_id;

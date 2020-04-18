@@ -9,7 +9,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
-    password : 'Rayan1234',
+    password : 'topline99',
     database : 'fanschoice',
     multipleStatements : true,
     connectionLimit : 4
