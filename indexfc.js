@@ -32,8 +32,8 @@ const query_user_id_from_email = 'SELECT id FROM user WHERE email = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;' 
 const query_post_revA = 'INSERT INTO reviewAlbum (userID, content) VALUES (?, ?);';
-const query_albums = 'SELECT album.name FROM artist,album WHERE album.artistid = artist.id AND artist.name = ?;';
-const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id AND artist.name = ?;';
+const query_albums = 'SELECT name FROM album; ';
+const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id;';
 
 
 
@@ -183,14 +183,15 @@ app.get('/search', debuglog, db, function (req, res) {
     query_chain(req.connection, [
         [query_artist, [req.params.name]],
         [query_albums, [req.params.name]],
-        [query_song, [req.params.name]]
-    
-    ]).then(([artist]) => {
+        [query_song, [req.params.name]],
+        [query_emails, [req.params.name]]
+
+    ]).then(([artist,album,song,email]) => {
         let result = {
             artist,
-            artist_name: req.params.name,
-            albums: req.params.name,
-            songs: req.params.name
+            album,
+            song,
+            email
         };
         res.render('search', result);
     }).catch((error) => {
