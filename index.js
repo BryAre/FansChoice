@@ -15,7 +15,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'topline99',
     database: 'twizzle',
     multipleStatements: true,
     // A `connectionLimit` of 4 works nicely on my machine.  YMMV.
@@ -193,13 +193,20 @@ app.post('/profile', debuglog, db, function (req, res) {
 
 });
 
-
 app.get('/search', debuglog, db, function (req, res) {
-    res.render('search');
-
+    // The `query_users` variable holds a query which returns a list of all of the site's users.
+    req.connection.query(query_users, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing `query_users`.', error);
+            res.render('error', { error });
+        } else {
+            // We pass the list of users to the `login` template to populate the drop down.
+            res.render('search', { results });
+        }
+    });
 });
 
-app.post('/search', debuglog, db, function (req, res) {
+ app.post('/search', debuglog, db, function (req, res) {
 
     res.redirect('/search');
 

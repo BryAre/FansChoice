@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+
 <div class="header">
     <h1 class="frontpage">
         FANS CHOICE
@@ -23,17 +25,19 @@
     </p>
     <label for="user">Artists</label>
     <br/>
-        <select name="user" class="main-text" style="width: 50%;">
-            {{#each results}}
-            <option id ='artist' value="{{ name }}">{{ name }}</option>
-            {{/each}}
-            </select>
+                <label for="user">Artists</label>
+                <select id='test' name="user" class="main-text">
+                    {{#each results}}
+                    <option value="{{ name }}">{{ name }}</option>
+                    {{/each}}
+                </select>
+                <button onclick="TestsFunction()" class="pure-button pure-button-primary button-style2">
+                    Search
+                </button>
 
-            <button onclick="TestsFunction()" style="color:black">Tests</button>
-
-<div id="TestsDiv">
+<div id="TestsDiv" style="display: none;">
     <h1>Artist</h1>
-    {{document.getElementById("artist").value}}
+    <h2>{{results}}</h2>
     <h1>Albums</h1>
 
     <h1>Songs</h1>
