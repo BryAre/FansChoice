@@ -25,49 +25,45 @@
     </p>
     <label for="user">Artists</label>
     <br/>
-    <div>
-                <select id='test' name="user" class="main-text">
-                    {{#each artist}}
-                    <option value="{{ name }}">{{ name }}</option>
-                    {{/each}}
-                </select>
-                <button onclick="TestsFunction()" class="pure-button pure-button-primary button-style2">
-                    Search
-                </button>
+
+    
+    <form method="post">
+        <select id='test' name="artist_name" class="main-text">
+            {{#each artist}}
+            <option value="{{ name }}">{{ name }}</option>
+            {{/each}}
+        </select>
+        <button formaction="/search/artist" class="pure-button pure-button-primary button-style2">Search</button>
+    </form>
 
                 
-</div>
     
 
 
 <div id="TestsDiv" >
+
     <h1>Artist</h1>
-    <select class="main-text">
-                    {{#each album}}
-                    <option value="{{ name }}">{{ name }}</option>
-                    {{/each}}
-                </select>
+    {{#each artists}}
+        <p>{{name}}</p>
+     {{/each}}
+
+
     <h1>Albums</h1>
-        <select class="main-text">
-            {{#each album}}
-            <option value="{{ name }}">{{ name }}</option>
-            {{/each}}
-            </select>
+    {{#each album}}
+        <p>{{name}}</p>
+     {{/each}}
 
     <h1>Songs</h1>
-
-    <select class="main-text">
             {{#each song}}
-            <option value="{{ name }}">{{ name }}</option>
+            <p>{{name}}</p>
             {{/each}}
-            </select>
+           
 
     <h1>Reviews/Rating</h1>
-    <select class="main-text">
             {{#each email}}
             <option value="{{ email }}">{{ email }}</option>
             {{/each}}
-            </select>
+        
 
 </div>
 

@@ -31,9 +31,10 @@ const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_user_id_from_email = 'SELECT id FROM user WHERE email = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;' 
+const query_artist_name = 'SELECT name from artist WHERE name = ?;' 
 const query_post_revA = 'INSERT INTO reviewAlbum (userID, content) VALUES (?, ?);';
-const query_albums = 'SELECT name FROM album; ';
-const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id;';
+const query_albums = 'select album.name from artist,album where album.artistid =artist.id and artist.name = ?;';
+const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
 
 
 
@@ -204,16 +205,31 @@ app.get('/search', debuglog, db, function (req, res) {
     res.redirect('/search');
 });
 
-app.post('/post', debuglog, db, checkAuth, function(req, res) {
-    req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
-        if (error) {
-            res.render('error', { error });
-        } else {
-            res.redirect(302, '/');
-        }
+app.post('/search/artist', debuglog, db, function(req, res) {
+    if (!req.body) {
+        res.redirect(500, '/search?error=unknown');
+    }
+    console.log(req.body.artist_name);
+    query_chain(req.connection, [
+        [query_artist, [req.body.artist_name]],
+        [query_artist_name, [req.body.artist_name]],
+        [query_albums, [req.body.artist_name]],
+        [query_song, [req.body.artist_name]],
+        [query_emails, [req.body.artist_name]]
+    ]).then(([artist,artists,album,song,email]) => {
+        let result = {
+            artist,
+            artists,
+            album,
+            song,
+            email
+        };
+        res.render('search', result);
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
     });
-});
-
+    });
 
 app.post('/api/user', debuglog, db, function(req, res) {
     if (!req.body) {
@@ -228,6 +244,19 @@ app.post('/api/user', debuglog, db, function(req, res) {
         res.redirect(302, '/');
     });
 });
+
+app.post('/post', debuglog, db, checkAuth, function(req, res) {
+    req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
+        if (error) {
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/');
+        }
+    });
+});
+
+
+
 
 app.get('/error', debuglog, db, function(req, res) {
     res.render('error', { error: req.query.type === 'preview' ? 'Cannot preview.' : 'Unknown error.' });
