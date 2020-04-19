@@ -11,77 +11,55 @@
         <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
+
     </form>
 </div>
 
     <br /><br />
-
+</section>
 
 <section class="portfolio-block photography">
     <div class="container">
-        <div class="column no-gutters space" style="text-align: center;">
+        <div class="row no-gutters">
+            <div class="col-md-6 col-lg-4 item zoom-on-hover"><a href="#"><img class="img-fluid image"
+                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
 
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
+            </div>
+            <div class="col-md-6 col-lg-4 item zoom-on-hover middleImage"><a href="#"><img class="img-fluid image"
+                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
 
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-    </div>
-
-    <section class="portfolio-block photography">
-        <div class="container">
-            <div style="margin: 5vh" class="rowH">
+            </div>
+            <div class="col-md-6 col-lg-4 item zoom-on-hover rightImage"><a href="#"><img class="img-fluid image"
+                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
 
             </div>
         </div>
         <br /><br />
-    </section>
 </section>
+
+<br /><br />
 
 <form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post">
     <fieldset class="pure-g">
-        {{#if is_own_stream}}
-        <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">LATEST
-            COMMENTS</legend>
-        {{/if}}
-        <div class="stream" style="background-color: white; color:black;" style="overflow-y: auto;">
-            {{#each stream}}
+        <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
+            {{#each reviewAlbum}}
+            REVIEW For {{name}}</legend>
+            {{/each}}
+        <div class="reviewAlbum" style="background-color: white; color:black;" style="overflow-y: auto;">
+            
+            
             <div class="pure-u-1 twizzle">
                 <div class="user-info">
-                    <span class="displayname">{{ displayname }}</span>
                     <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: black;"><small>(@{{ name }})</small></span></a>
+                            style="color: blue;"><small>{{ userName }}</small></span></a>
                     <span class="when info" style="color: black;">{{ posted }}</span>
+                    <span class="when info" style="color: black;">{{ album.albumID }}</span>  <!-- this will come from previous pg --->
                 </div>
                 <div class="twizzle-content">
                     {{ content }}
                 </div>
             </div>
-            {{/each}}
-
-
+            
         </div>
         <input name="twizzle" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
         <input id="twizzle" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
@@ -89,10 +67,8 @@
 </form>
 </div>
 
-
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-
     $('.counter-btn').click(function (e) {
         e.preventDefault();
         var $btn = $(this);

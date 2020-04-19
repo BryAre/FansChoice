@@ -32,6 +32,7 @@ const query_artist = 'SELECT name from artist;'
 const query_artist_name = 'SELECT name from artist WHERE name = ?;' 
 const query_post_revA = 'INSERT INTO reviewAlbum (name, content) VALUES (?, ?);'; //
 const query_albums = 'select album.name from artist,album where album.artistid =artist.id and artist.name = ?;';
+const query_albums_name = 'select * from album where album.name = ?;';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
 const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
 const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
@@ -232,6 +233,31 @@ app.post('/search/artist', debuglog, db, function(req, res) {
         res.render('error', { error });
     });
     });
+
+    app.get('/reviewAlbum', debuglog, db, function (req, res) {
+        res.render('reviewAlbum');
+    
+    });
+    
+    app.post('/search/artist/reviewAlbum', debuglog, db, function (req, res) {
+    
+        if (!req.body) {
+            res.redirect(500, '/search?error=unknown');
+        }
+        console.log(req.body.album_name);
+        query_chain(req.connection, [
+            [query_albums_name, [req.body.album_name]],
+        ]).then(([reviewAlbum]) => {
+            let result = {
+                reviewAlbum,
+            };
+            res.render('reviewAlbum', result);
+        }).catch((error) => {
+            console.log(error);
+            res.render('error', { error });
+        });
+        });
+
 
 app.post('/api/user', debuglog, db, function(req, res) {
     if (!req.body) {
