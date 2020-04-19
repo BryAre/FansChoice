@@ -49,9 +49,14 @@
 
 
     <h1>Albums</h1>
-    {{#each album}}
-        <p>{{name}}</p>
-     {{/each}}
+            <form method="post"> 
+            <select id='test' name="album_name" class="main-text">
+            {{#each album}}
+            <option value="{{ name }}">{{ name }}</option>
+            {{/each}}
+            </select>
+            <button formaction="/search/artist/reviewAlbum" class="pure-button button-style2">Review</button>
+            </form>
 
     <h1>Songs</h1>
             {{#each song}}
@@ -61,7 +66,6 @@
 
     <h1>Reviews/Rating</h1>
             {{#each email}}
-            <option value="{{ email }}">{{ email }}</option>
             {{/each}}
         
 
