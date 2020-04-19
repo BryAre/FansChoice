@@ -1,3 +1,4 @@
+
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -9,37 +10,33 @@ const port = 3000;
 const pool = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
-    password : 'password',
+    password : 'Rayan1234',
     database : 'fanschoice',
     multipleStatements : true,
     connectionLimit : 4
 });
 
 app.use(express.static('static'));
-
 app.use(session({ secret: 'csc336' }));
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded());
 app.engine('handlebars', hb({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-
+//query list
 const query_users = 'SELECT userName FROM user ORDER BY userName;';
-const query_stream = 'SELECT * FROM stream WHERE stream_id = get_user_id_from_name(?) ORDER BY posted DESC;';
+const query_stream = 'SELECT * FROM allreviews ORDER BY posted DESC;';
 const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
-const query_user_id_from_email = 'SELECT id FROM user WHERE email = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;' 
 const query_artist_name = 'SELECT name from artist WHERE name = ?;' 
-const query_post_revA = 'INSERT INTO reviewAlbum (userID, content) VALUES (?, ?);';
+const query_post_revA = 'INSERT INTO reviewAlbum (name, content) VALUES (?, ?);'; //
 const query_albums = 'select album.name from artist,album where album.artistid =artist.id and artist.name = ?;';
 const query_albums_name = 'select * from album where album.name = ?;';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
-
-
-
-
+const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
+const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
+ 
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
         res.redirect(302, '/login');
@@ -92,10 +89,10 @@ app.get('/login', debuglog, db, function (req, res) {
         } else {
             // We pass the list of users to the `login` template to populate the drop down.
             res.render('login', { results });
-
         }
     });
 });
+
 
 app.post('/login', debuglog, db, function (req, res) {
     req.connection.query(query_user_id_from_name, [req.body.user], (error, result) => {
@@ -115,11 +112,19 @@ app.post('/login', debuglog, db, function (req, res) {
     });
 });
 
-
+// for top songs
 
 app.get('/songs', debuglog, db, function (req, res) {
-    res.render('songs');
-
+    // The `query_users` variable holds a query which returns a list of all of the site's users.
+    req.connection.query(query_topsingles, (error, singlenames, fields) => {
+        if (error) {
+            console.error('Error executing `query_users`.', error);
+            res.render('error', { error });
+        } else {
+            console.log(singlenames);
+            res.render('songs', {singlenames});
+        }
+    });
 });
 
 app.post('/songs', debuglog, db, function (req, res) {
@@ -140,12 +145,13 @@ app.post('/stream', debuglog, db, function (req, res) {
 });
 
 app.get('/profile', debuglog, db, function (req, res) {
+
     res.render('profile');
 
 });
 
 app.post('/profile', debuglog, db, function (req, res) {
-
+    console.degbug(result[0])
     res.redirect('/profile');
 
 });
@@ -159,17 +165,14 @@ app.get('/', debuglog, db, checkAuth, function(req, res) {
     res.redirect(`/user/${req.session.user_name}`);
 });
 
-app.get('/user/:name', debuglog, db, function(req, res) {
-    // Is the user visiting thier own stream?
-    let is_own_stream = (req.params.name === req.session.user_name);
+app.get('/user/:name', debuglog, db, function(req, res) { //** 
     console.log(req.params.name, req.session.user_name, req.params.name === req.session.user_name);
     query_chain(req.connection, [
         [query_stream, [req.params.name]],
     
-    ]).then(([stream]) => {
+    ]).then(([reviewAlbum]) => {
         let result = {
-            stream,  
-            is_own_stream,
+            reviewAlbum,  
             stream_name: req.params.name,
             user_name: req.session.user_name
         };
@@ -179,7 +182,6 @@ app.get('/user/:name', debuglog, db, function(req, res) {
         res.render('error', { error });
     });
 });
-
 
 app.get('/search', debuglog, db, function (req, res) {
     query_chain(req.connection, [
@@ -271,18 +273,15 @@ app.post('/api/user', debuglog, db, function(req, res) {
     });
 });
 
-app.post('/post', debuglog, db, checkAuth, function(req, res) {
-    req.connection.query(query_post_revA, [req.session.user_id, req.body.twizzle], (error, stream, fields) => {
+app.post('/post', debuglog, db, checkAuth, function(req, res) { // use this for review page
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.twizzle], (error, stream, fields) => {
         if (error) {
             res.render('error', { error });
         } else {
             res.redirect(302, '/');
         }
     });
-});
-
-
-
+}); //
 
 app.get('/error', debuglog, db, function(req, res) {
     res.render('error', { error: req.query.type === 'preview' ? 'Cannot preview.' : 'Unknown error.' });
