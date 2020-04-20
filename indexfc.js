@@ -10,7 +10,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
-    password : 'Rayan1234',
+    password : 'topline99',
     database : 'fanschoice',
     multipleStatements : true,
     connectionLimit : 4
@@ -30,7 +30,7 @@ const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;' 
 const query_artist_name = 'SELECT name from artist WHERE name = ?;' 
-const query_post_revA = 'INSERT INTO reviewAlbum (name, content) VALUES (?, ?);'; //
+const query_post_revA = 'INSERT INTO reviewAlbum (name, content,albumID) VALUES (?, ?, ?);'; //
 const query_albums = 'select album.name from artist,album where album.artistid =artist.id and artist.name = ?;';
 const query_albums_name = 'select * from album where album.name = ?;';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
@@ -151,7 +151,7 @@ app.get('/profile', debuglog, db, function (req, res) {
 });
 
 app.post('/profile', debuglog, db, function (req, res) {
-    console.degbug(result[0])
+    //console.degbug(result[0])
     res.redirect('/profile');
 
 });
@@ -274,7 +274,8 @@ app.post('/api/user', debuglog, db, function(req, res) {
 });
 
 app.post('/post', debuglog, db, checkAuth, function(req, res) { // use this for review page
-    req.connection.query(query_post_revA, [req.session.user_name, req.body.twizzle], (error, stream, fields) => {
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.twizzle, req.body.album_id], (error, stream, fields) => {
+        console.log(req.body.album_id);
         if (error) {
             res.render('error', { error });
         } else {

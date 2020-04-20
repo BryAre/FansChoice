@@ -17,7 +17,6 @@
 
     <br /><br />
 </section>
-
 <section class="portfolio-block photography">
     <div class="container">
         <div class="row no-gutters">
@@ -34,7 +33,7 @@
 
             </div>
         </div>
-        <br /><br />
+        <br /><br/>
 </section>
 
 <br /><br />
@@ -44,6 +43,9 @@
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewAlbum}}
             REVIEW For {{name}}</legend>
+            <select name='album_id'>
+                 <option value="{{ albumid }}" selected>{{ albumid }}</option>
+            </select>
             {{/each}}
         <div class="reviewAlbum" style="background-color: white; color:black;" style="overflow-y: auto;">
             
