@@ -11,22 +11,22 @@
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
     </form>
-    
+
 </div>
-<br/><br/><br/>
-<div id="TestsDiv" >
+<br /><br /><br />
+<div id="TestsDiv">
     <center>
-    <h1>Single Rankings</h1>
-    {{#each singlenames}}
+        <h1>Single Rankings</h1>
+        {{#each singlenames}}
         <p>{{name}}</p>
-     {{/each}}
+        {{/each}}
     </center>
 </div>
 </div>>
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
     function TestsFunction() {
-    var T = document.getElementById("TestsDiv");
-    T.style.display = "block";  // <-- Set it to block
-}
+        var T = document.getElementById("TestsDiv");
+        T.style.display = "block";  // <-- Set it to block
+    }
 </script>
