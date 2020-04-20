@@ -15,7 +15,7 @@
     </form>
 </div>
 
-    <br /><br />
+<br /><br />
 </section>
 
 <section class="portfolio-block photography">
@@ -44,10 +44,10 @@
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewSingle}}
             Review For {{name}}</legend>
-            <select name='single_id'>
-                 <option value="{{ singleid }}" selected>{{ singleid }}</option>
-            </select>
-            {{/each}}
+        <select name='single_id'>
+            <option value="{{ singleid }}" selected>{{ singleid }}</option>
+        </select>
+        {{/each}}
         <div class="reviewSingle" style="background-color: white; color:black;" style="overflow-y: auto;">
             <div class="pure-u-1 review">
                 <div class="user-info">
@@ -58,10 +58,14 @@
                     {{ content }}
                 </div>
             </div>
-            
+
         </div>
+
         <input name="review" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
         <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
+        <button formaction="/likedSingle" class="fa fa-thumbs-up green_button counter-btn" style="font-size:48px">
+            Like </button>
+
     </fieldset>
 </form>
 </div>

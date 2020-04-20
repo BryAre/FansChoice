@@ -38,6 +38,12 @@ const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid 
 const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
 const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
 
+
+const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE albumID = ? AND name = ?;';
+const query_liked_single = 'UPDATE reviewSingle SET liked = true WHERE singleID = ? AND name = ?;';
+
+
+
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
         res.redirect(302, '/login');
@@ -331,7 +337,32 @@ app.post('/post_as', debuglog, db, checkAuth, function (req, res) { // use this 
     });
 });
 
+app.get('/liked', debuglog, db, function (req, res) {
+    res.render('');
 
+});
+
+app.post('/likedAlbum', debuglog, db, function (req, res) {
+
+    req.connection.query(query_liked_album, [req.body.album_id, req.session.user_name], (error, results, fields) => {
+        if (error) {
+            return console.error(error.message);
+        }
+        console.log('Rows affected:', results.affectedRows);
+    });
+
+});
+
+app.post('/likedSingle', debuglog, db, function (req, res) {
+
+    req.connection.query(query_liked_single, [req.body.single_id, req.session.user_name], (error, results, fields) => {
+        if (error) {
+            return console.error(error.message);
+        }
+        console.log('Rows affected:', results.affectedRows);
+    });
+
+});
 
 app.get('/error', debuglog, db, function (req, res) {
     res.render('error', { error: req.query.type === 'preview' ? 'Cannot preview.' : 'Unknown error.' });
