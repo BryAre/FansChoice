@@ -40,6 +40,7 @@ const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
 
 
 const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE albumID = ? AND name = ?;';
+const query_disliked_album = 'UPDATE reviewAlbum SET liked = false WHERE albumID = ? AND name = ?;';
 const query_liked_single = 'UPDATE reviewSingle SET liked = true WHERE singleID = ? AND name = ?;';
 
 
@@ -322,7 +323,7 @@ app.post('/post_ar', debuglog, db, checkAuth, function (req, res) { // use this 
         if (error) {
             res.render('error', { error });
         } else {
-            res.redirect(302, '/');
+            res.redirect(302, '/likepage');
         }
     });
 });
@@ -332,36 +333,49 @@ app.post('/post_as', debuglog, db, checkAuth, function (req, res) { // use this 
         if (error) {
             res.render('error', { error });
         } else {
-            res.redirect(302, '/');
+            res.redirect(302, '/likepageSingles');
         }
     });
 });
 
-app.get('/liked', debuglog, db, function (req, res) {
-    res.render('');
+app.get('/likepage', debuglog, db, function (req, res) {
+    res.render('likepage');
 
 });
 
-app.post('/likedAlbum', debuglog, db, function (req, res) {
-
-    req.connection.query(query_liked_album, [req.body.album_id, req.session.user_name], (error, results, fields) => {
+app.post('/likepage', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
         if (error) {
-            return console.error(error.message);
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/likepage');
         }
-        console.log('Rows affected:', results.affectedRows);
     });
+});
+
+app.get('/likepageSingles', debuglog, db, function (req, res) {
+    res.render('likepageSingles');
 
 });
 
-app.post('/likedSingle', debuglog, db, function (req, res) {
-
-    req.connection.query(query_liked_single, [req.body.single_id, req.session.user_name], (error, results, fields) => {
+app.post('/likepageSingles', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
         if (error) {
-            return console.error(error.message);
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/likepageSingles');
         }
-        console.log('Rows affected:', results.affectedRows);
     });
+});
 
+app.post('/liked', debuglog, function (req, res) {
+
+    res.redirect('/stream');
+});
+
+app.post('/likedSingle', debuglog, function (req, res) {
+
+    res.redirect('/stream');
 });
 
 app.get('/error', debuglog, db, function (req, res) {

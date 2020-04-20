@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="header">
+    <h1 class="frontpage">
+        FANS CHOICE
+    </h1>
+    <br />
+    <form method="post">
+        <button formaction="/logout" class="pure-button button-small">logout</button>
+        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
+        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
+        <button formaction="/search" class="pure-button button-small">Search</button>
+    </form>
+</div>
+
+<section class="portfolio-block photography">
+    <div class="container">
+        <div style="margin: 10vh" class="rowH">
+
+        </div>
+    </div>
+    <br /><br />
+</section>
+
+
+
+<form method="post">
+    <h2>Did you like the album/song?</h2>
+    <button formaction="/likedSingle" class="pure-button button-small">like</button>
+
+</form>
+
+
+
+</div>
+</section>
+
+
+</div>
+
+
+<script>
+    $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
+
+    $('.counter-btn').click(function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        $('#output-' + $btn.data('index')).html(function (i, val) {
+            val = val * 1 + $btn.data('inc');
+            return (val <= 0 ? '' : '+') + val;
+        });
+    });
+
+
+</script>

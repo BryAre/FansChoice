@@ -153,13 +153,13 @@ INSERT INTO reviewSingle (name, singleID, posted, content, liked) VALUES('md123'
 
 
 CREATE VIEW allreviews AS
-    SELECT name, content, posted, RA_ID FROM
-        ((SELECT name, content, posted, RA_ID
+    SELECT name, content, posted, RA_ID, liked FROM
+        ((SELECT name, content, posted, RA_ID, liked
             FROM reviewAlbum
             WHERE deleted is NULL
             )
         UNION
-        (SELECT name,  content, posted, RA_IS
+        (SELECT name,  content, posted, RA_IS, liked
             FROM reviewSingle
             WHERE deleted IS NULL)) T;
 
