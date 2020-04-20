@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -9,14 +10,12 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
-        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/stream" class="pure-button button-small">HOME</button>
+        <button formaction="/songs" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
 
     </form>
-    
-
 </div>
 <br/><br/><br/>
 <div style="text-align: center;">
@@ -35,11 +34,6 @@
         </select>
         <button formaction="/search/artist" class="pure-button pure-button-primary button-style2">Search</button>
     </form>
-
-                
-    
-
-
 <div id="TestsDiv" >
 
     <h1>Artist</h1>
@@ -59,26 +53,24 @@
             </form>
 
     <h1>Songs</h1>
+            <form method="post"> 
+            <select id='test' name="single_name" class="main-text">
             {{#each song}}
-            <p>{{name}}</p>
+            <option value="{{ name }}">{{ name }}</option>
             {{/each}}
+            </select>
+            <button formaction="/search/artist/reviewSingle" class="pure-button button-style2">Review</button>
+            </form>
            
 
     <h1>Reviews/Rating</h1>
             {{#each email}}
             {{/each}}
-        
-
 </div>
-
-
 </div>
-
-
 
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-
     function TestsFunction() {
     var T = document.getElementById("TestsDiv");
     T.style.display = "block";  // <-- Set it to block

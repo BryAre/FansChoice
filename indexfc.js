@@ -1,4 +1,3 @@
-
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -30,9 +29,11 @@ const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;' 
 const query_artist_name = 'SELECT name from artist WHERE name = ?;' 
-const query_post_revA = 'INSERT INTO reviewAlbum (name, content) VALUES (?, ?);'; //
+const query_post_revA = 'INSERT INTO reviewAlbum (name, content, albumID) VALUES (?, ?, ?);'; //query fix
+const query_post_revS = 'INSERT INTO reviewSingle (name, content, singleID) VALUES (?, ?, ?);'; //query fix
 const query_albums = 'select album.name from artist,album where album.artistid =artist.id and artist.name = ?;';
 const query_albums_name = 'select * from album where album.name = ?;';
+const query_singles_name = 'select * from single where single.name = ?;';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
 const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
 const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
@@ -133,9 +134,41 @@ app.post('/songs', debuglog, db, function (req, res) {
 
 });
 
-app.get('/stream', debuglog, db, function (req, res) {
-    res.render('stream');
+// for top albums
+app.get('/albums', debuglog, db, function (req, res) {
+    // The `query_users` variable holds a query which returns a list of all of the site's users.
+    req.connection.query(query_topalbums, (error, albumnames, fields) => {
+        if (error) {
+            console.error('Error executing `query_users`.', error);
+            res.render('error', { error });
+        } else {
+            res.render('albums', {albumnames});
+        }
+    });
+});
 
+app.post('/albums', debuglog, db, function (req, res) {
+
+    res.redirect('/albums');
+
+});
+
+app.get('/stream', debuglog, db, function (req, res) {
+    console.log(req.params.name, req.session.user_name, req.params.name === req.session.user_name);
+    query_chain(req.connection, [
+        [query_stream, [req.params.name]],
+    
+    ]).then(([reviewAlbum]) => {
+        let result = {
+            reviewAlbum,  
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result);
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });
 });
 
 app.post('/stream', debuglog, db, function (req, res) {
@@ -144,17 +177,7 @@ app.post('/stream', debuglog, db, function (req, res) {
 
 });
 
-app.get('/profile', debuglog, db, function (req, res) {
 
-    res.render('profile');
-
-});
-
-app.post('/profile', debuglog, db, function (req, res) {
-    console.degbug(result[0])
-    res.redirect('/profile');
-
-});
 
 app.post('/logout', debuglog, function (req, res) {
     delete req.session.user_id;
@@ -165,7 +188,7 @@ app.get('/', debuglog, db, checkAuth, function(req, res) {
     res.redirect(`/user/${req.session.user_name}`);
 });
 
-app.get('/user/:name', debuglog, db, function(req, res) { //** 
+app.get('/user/:name', debuglog, db, function(req, res) { //** ******
     console.log(req.params.name, req.session.user_name, req.params.name === req.session.user_name);
     query_chain(req.connection, [
         [query_stream, [req.params.name]],
@@ -239,8 +262,7 @@ app.post('/search/artist', debuglog, db, function(req, res) {
     
     });
     
-    app.post('/search/artist/reviewAlbum', debuglog, db, function (req, res) {
-    
+app.post('/search/artist/reviewAlbum', debuglog, db, function (req, res) {
         if (!req.body) {
             res.redirect(500, '/search?error=unknown');
         }
@@ -256,7 +278,24 @@ app.post('/search/artist', debuglog, db, function(req, res) {
             console.log(error);
             res.render('error', { error });
         });
+    });
+    //  single version of above!!!
+app.post('/search/artist/reviewSingle', debuglog, db, function (req, res) {
+        if (!req.body) {
+            res.redirect(500, '/search?error=unknown');
+        }
+        query_chain(req.connection, [
+            [query_singles_name, [req.body.single_name]],
+        ]).then(([reviewSingle]) => {
+            let result = {
+                reviewSingle,
+            };
+            res.render('reviewSingle', result);
+        }).catch((error) => {
+            console.log(error);
+            res.render('error', { error });
         });
+    }); 
 
 
 app.post('/api/user', debuglog, db, function(req, res) {
@@ -272,16 +311,27 @@ app.post('/api/user', debuglog, db, function(req, res) {
         res.redirect(302, '/');
     });
 });
-
-app.post('/post', debuglog, db, checkAuth, function(req, res) { // use this for review page
-    req.connection.query(query_post_revA, [req.session.user_name, req.body.twizzle], (error, stream, fields) => {
+app.post('/post_ar', debuglog, db, checkAuth, function(req, res) { // use this for review page
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
         if (error) {
             res.render('error', { error });
         } else {
             res.redirect(302, '/');
         }
     });
-}); //
+}); 
+
+app.post('/post_as', debuglog, db, checkAuth, function(req, res) { // use this for review page
+    req.connection.query(query_post_revS, [req.session.user_name, req.body.review, req.body.single_id], (error, stream, fields) => {
+        if (error) {
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/');
+        }
+    });
+}); 
+
+
 
 app.get('/error', debuglog, db, function(req, res) {
     res.render('error', { error: req.query.type === 'preview' ? 'Cannot preview.' : 'Unknown error.' });
