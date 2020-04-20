@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <div class="header">
     <h1 class="frontpage">
         FANS CHOICE
@@ -7,98 +6,29 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
-        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/stream" class="pure-button button-small">Home</button>
+        <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
     </form>
+
 </div>
-
-    <br /><br />
-
-
-<section class="portfolio-block photography">
-    <div class="container">
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-
-        <div class="column no-gutters space" style="text-align: center;">
-
-            <h2 style="text-align: center;">Song Name <br /> - Made by Artist</h2>
-
-        </div>
-    </div>
-
-    <section class="portfolio-block photography">
-        <div class="container">
-            <div style="margin: 5vh" class="rowH">
-
-            </div>
-        </div>
-        <br /><br />
-    </section>
-</section>
-
-<form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post">
-    <fieldset class="pure-g">
-        {{#if is_own_stream}}
-        <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">LATEST
-            COMMENTS</legend>
-        {{/if}}
-        <div class="stream" style="background-color: white; color:black;" style="overflow-y: auto;">
-            {{#each stream}}
-            <div class="pure-u-1 twizzle">
-                <div class="user-info">
-                    <span class="displayname">{{ displayname }}</span>
-                    <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: black;"><small>(@{{ name }})</small></span></a>
-                    <span class="when info" style="color: black;">{{ posted }}</span>
-                </div>
-                <div class="twizzle-content">
-                    {{ content }}
-                </div>
-            </div>
-            {{/each}}
-
-
-        </div>
-        <input name="twizzle" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
-        <input id="twizzle" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
-    </fieldset>
-</form>
+<br /><br /><br />
+<div id="TestsDiv">
+    <center>
+        <h1>Single Rankings (Top few)</h1>
+        {{#each singlenames}}
+        <br/>
+         <h3 style='font-style: italic; text-decoration: underline;'><strong>{{name}}</strong></h3>
+         <br/>
+        {{/each}}
+    </center>
 </div>
-
-
+</div>>
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-
-    $('.counter-btn').click(function (e) {
-        e.preventDefault();
-        var $btn = $(this);
-        $('#output-' + $btn.data('index')).html(function (i, val) {
-            val = val * 1 + $btn.data('inc');
-            return (val <= 0 ? '' : '+') + val;
-        });
-    });
+    function TestsFunction() {
+        var T = document.getElementById("TestsDiv");
+        T.style.display = "block";  // <-- Set it to block
+    }
 </script>

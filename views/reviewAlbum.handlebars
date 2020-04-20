@@ -7,16 +7,17 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
-        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/stream" class="pure-button button-small">HOME</button>
+        <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
 
     </form>
 </div>
 
-    <br /><br />
+<br /><br />
 </section>
+
 <section class="portfolio-block photography">
     <div class="container">
         <div class="row no-gutters">
@@ -33,50 +34,43 @@
 
             </div>
         </div>
-        <br /><br/>
+        <br /><br />
 </section>
 
 <br /><br />
 
-<form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post">
+<form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post_ar">
     <fieldset class="pure-g">
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewAlbum}}
-            REVIEW For {{name}}</legend>
-            <select name='album_id'>
-                 <option value="{{ albumid }}" selected>{{ albumid }}</option>
-            </select>
-            {{/each}}
-        <div class="reviewAlbum" style="background-color: white; color:black;" style="overflow-y: auto;">
-            
-            
-            <div class="pure-u-1 twizzle">
-                <div class="user-info">
-                    <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: blue;"><small>{{ userName }}</small></span></a>
-                    <span class="when info" style="color: black;">{{ posted }}</span>
-                    <span class="when info" style="color: black;">{{ album.albumID }}</span>  <!-- this will come from previous pg --->
-                </div>
-                <div class="twizzle-content">
-                    {{ content }}
-                </div>
-            </div>
-            
-        </div>
-        <input name="twizzle" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
-        <input id="twizzle" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
+            Review For: {{name}}</legend>
+        <select style='display:none;' name='album_id'>
+            <option  value="{{ albumid }}" selected>{{ albumid }}</option>
+        </select>
+        <select style='display:none;' name='album_name'>
+            <option  value="{{ name }}" selected>{{ name }}</option>
+        </select>
+        
+
+        <textarea name="review" rows="4" cols="100" style="color: black; width:100%;" placeholder="Say something about {{name}}..."></textarea>
+        {{/each}}
+        <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post"/>
+        <button formaction="/likedAlbum" class="fa fa-thumbs-up green_button counter-btn" style="font-size:48px">
+            Like </button>
+
+        
+
     </fieldset>
 </form>
+
+
+
+
 </div>
 
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-    $('.counter-btn').click(function (e) {
-        e.preventDefault();
-        var $btn = $(this);
-        $('#output-' + $btn.data('index')).html(function (i, val) {
-            val = val * 1 + $btn.data('inc');
-            return (val <= 0 ? '' : '+') + val;
-        });
-    });
+
+
+
 </script>

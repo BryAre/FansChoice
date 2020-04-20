@@ -7,15 +7,15 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
-        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/stream" class="pure-button button-small">HOME</button>
+        <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
 
     </form>
 </div>
 
-    <br /><br />
+<br /><br />
 </section>
 
 <section class="portfolio-block photography">
@@ -23,12 +23,15 @@
         <div class="row no-gutters">
             <div class="col-md-6 col-lg-4 item zoom-on-hover"><a href="#"><img class="img-fluid image"
                         src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
+
             </div>
             <div class="col-md-6 col-lg-4 item zoom-on-hover middleImage"><a href="#"><img class="img-fluid image"
                         src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
+
             </div>
             <div class="col-md-6 col-lg-4 item zoom-on-hover rightImage"><a href="#"><img class="img-fluid image"
                         src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
+
             </div>
         </div>
         <br /><br />
@@ -36,32 +39,24 @@
 
 <br /><br />
 
-<form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post">
+<form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post_as">
     <fieldset class="pure-g">
-        <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">LATEST
-            REVIEWS</legend>
-        <div class="reviewAlbum" style="background-color: white; color:black;" style="overflow-y: auto;">
-            {{#each reviewAlbum}}
-            <div class="pure-u-1 twizzle">
-                <div class="user-info">
-                    <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: blue;"><small>{{ name }}</small></span></a>
-                    <span class="when info" style="color: black;">{{ posted }}</span>
-                </div>
-                <div class="twizzle-content">
-                    {{ content }}
-                </div>
-            </div>
-            {{/each}}
-
-
-        </div>
-        <input name="twizzle" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
-        <input id="twizzle" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
+        <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
+            {{#each reviewSingle}}
+            Review For: {{name}}</legend>
+        <select style='display:none;' name='single_id'>
+            <option value="{{ singleid }}" selected>{{ singleid }}</option>
+        </select>
+       
+       
+        <textarea name="review" rows="4" cols="100" style="color: black; width:100%;" placeholder="Say something about {{name}}..."></textarea>
+        {{/each}}
+        <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post"/>
+        <button formaction="/likedAlbum" class="fa fa-thumbs-up green_button counter-btn" style="font-size:48px">
+            Like </button>
     </fieldset>
 </form>
 </div>
-
 
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());

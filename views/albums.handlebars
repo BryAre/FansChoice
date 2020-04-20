@@ -6,28 +6,25 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/profile" class="pure-button button-small">PROFILE</button>
-        <button formaction="/stream" class="pure-button button-small">TOP ALBUMS</button>
+        <button formaction="/stream" class="pure-button button-small">HOME</button>
+        <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
     </form>
     
 </div>
 <br/><br/><br/>
-   
 <div id="TestsDiv" >
-
-    <h1>Single Rankings</h1>
-    {{#each singlenames}}
-        <p>{{name}}</p>
+    <center>
+    <h1>Album Rankings (Top few)</h1>
+    {{#each albumnames}}
+        <br/>
+         <h3 style='font-style: italic; text-decoration: underline;'><strong>{{name}}</strong></h3>
+         <br/>
      {{/each}}
-
+    </center>
 </div>
-
-
 </div>>
-
-
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
     function TestsFunction() {
