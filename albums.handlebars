@@ -6,7 +6,7 @@
     <br />
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
-        <button formaction="/stream" class="pure-button button-small">Home</button>
+        <button formaction="/stream" class="pure-button button-small">HOME</button>
         <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
@@ -16,14 +16,14 @@
 <br/><br/><br/>
 <div id="TestsDiv" >
     <center>
-    <h1>Single Rankings</h1>
+    <h1>Album Rankings</h1>
     <ol>
-    {{#each singlenames}}
-    <li>
+    {{#each albumnames}}
+        <li>
         <p>{{name}}</p>
         </li>
      {{/each}}
-     </ol>
+    </ol>
     </center>
 </div>
 </div>>
