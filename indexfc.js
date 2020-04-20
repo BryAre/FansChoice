@@ -134,7 +134,20 @@ app.post('/songs', debuglog, db, function (req, res) {
 });
 
 app.get('/stream', debuglog, db, function (req, res) {
-    res.render('stream');
+    query_chain(req.connection, [
+        [query_stream, [req.params.name]],
+    
+    ]).then(([reviewAlbum]) => {
+        let result = {
+            reviewAlbum,  
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result);
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });
 
 });
 
