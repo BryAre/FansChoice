@@ -359,7 +359,7 @@ app.get('/likepageSingles', debuglog, db, function (req, res) {
 });
 
 app.post('/likepageSingles', debuglog, db, checkAuth, function (req, res) { // use this for review page
-    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
+    req.connection.query(query_post_revS, [req.session.user_name, req.body.review, req.body.single_id], (error, stream, fields) => {
         if (error) {
             res.render('error', { error });
         } else {
