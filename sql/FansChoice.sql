@@ -136,11 +136,11 @@ INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('md123','2020-
 INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('rickwtm72','2017-01-02 04:03:02',0,'jerrysucksballs@gmail.com');
 
 -- review album insertions 
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',true);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('ali123', 00020,'2020-03-28 02:02:01','soooooooooo goooooood',true);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-30 02:02:01','BABY PLUTOOO!',true);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',false);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('ali123', 00020,'2020-03-28 02:02:01','soooooooooo goooooood',false);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-30 02:02:01','BABY PLUTOOO!',false);
 INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00021,'2020-03-29 05:25:13','Amazing album!! Reminds me of the Old Weeknd!',true);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',true);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',false);
 INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00022,'2020-03-24 09:13:38','Couldve been better! Some of the beats sound repetitive',true);
 
 -- -- review single insertions 
@@ -153,13 +153,13 @@ INSERT INTO reviewSingle (name, singleID, posted, content, liked) VALUES('md123'
 
 
 CREATE VIEW allreviews AS
-    SELECT name, content, posted FROM
-        ((SELECT name, content, posted 
+    SELECT name, content, posted, RA_ID, liked FROM
+        ((SELECT name, content, posted, RA_ID, liked
             FROM reviewAlbum
             WHERE deleted is NULL
             )
         UNION
-        (SELECT name,  content, posted
+        (SELECT name,  content, posted, RA_IS, liked
             FROM reviewSingle
             WHERE deleted IS NULL)) T;
 
@@ -177,6 +177,3 @@ Create VIEW singlelikestotal AS
 -- use this table for top singles
 CREATE VIEW sumlikessingle AS 
     select singleid, name, sum(liked) as Total from singlelikestotal GROUP BY name;
-
-
-

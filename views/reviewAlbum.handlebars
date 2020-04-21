@@ -43,6 +43,7 @@
     <fieldset class="pure-g">
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewAlbum}}
+
             Review For: {{name}}</legend>
         <select style='display:none;' name='album_id'>
             <option  value="{{ albumid }}" selected>{{ albumid }}</option>
@@ -58,7 +59,6 @@
         <button formaction="/likedAlbum" class="fa fa-thumbs-up green_button counter-btn" style="font-size:48px">
             Like </button>
 
-        
 
     </fieldset>
 </form>

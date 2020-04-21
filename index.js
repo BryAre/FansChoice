@@ -9,7 +9,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'topline99',
+    password: 'password',
     database: 'fanschoice',
     multipleStatements: true,
     connectionLimit: 4
@@ -23,6 +23,7 @@ app.engine('handlebars', hb({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 //query list
 const query_users = 'SELECT userName FROM user ORDER BY userName;';
+
 const query_stream = '(SELECT allreviews.name, allreviews.content, allreviews.posted, album.name AS music FROM album, reviewAlbum, allreviews WHERE album.albumid = reviewalbum.albumID AND reviewAlbum.name = allreviews.name AND reviewAlbum.posted = allreviews.posted) UNION (SELECT allreviews.name, allreviews.content, allreviews.posted, single.name AS music FROM single, reviewsingle, allreviews WHERE single.singleid = reviewsingle.singleID AND reviewSingle.name = allreviews.name AND reviewSingle.posted = allreviews.posted)';
 const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
@@ -40,6 +41,7 @@ const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
 
 
 const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE albumID = ? AND name = ?;';
+const query_disliked_album = 'UPDATE reviewAlbum SET liked = false WHERE albumID = ? AND name = ?;';
 const query_liked_single = 'UPDATE reviewSingle SET liked = true WHERE singleID = ? AND name = ?;';
 
 
@@ -322,7 +324,7 @@ app.post('/post_ar', debuglog, db, checkAuth, function (req, res) { // use this 
         if (error) {
             res.render('error', { error });
         } else {
-            res.redirect(302, '/');
+            res.redirect(302, '/likepage');
         }
     });
 });
@@ -332,35 +334,50 @@ app.post('/post_as', debuglog, db, checkAuth, function (req, res) { // use this 
         if (error) {
             res.render('error', { error });
         } else {
-            res.redirect(302, '/');
+            res.redirect(302, '/likepageSingles');
         }
     });
 });
 
-app.get('/liked', debuglog, db, function (req, res) {
-    res.render('');
+
+app.get('/likepage', debuglog, db, function (req, res) {
+    res.render('likepage');
 
 });
 
-app.post('/likedAlbum', debuglog, db, function (req, res) {
-
-    req.connection.query(query_liked_album, [req.body.album_id, req.session.user_name], (error, results, fields) => {
+app.post('/likepage', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
         if (error) {
-            return console.error(error.message);
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/likepage');
         }
-        console.log('Rows affected:', results.affectedRows);
     });
+});
+
+app.get('/likepageSingles', debuglog, db, function (req, res) {
+    res.render('likepageSingles');
 
 });
 
-app.post('/likedSingle', debuglog, db, function (req, res) {
-
-    req.connection.query(query_liked_single, [req.body.single_id, req.session.user_name], (error, results, fields) => {
+app.post('/likepageSingles', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    req.connection.query(query_post_revS, [req.session.user_name, req.body.review, req.body.single_id], (error, stream, fields) => {
         if (error) {
-            return console.error(error.message);
+            res.render('error', { error });
+        } else {
+            res.redirect(302, '/likepageSingles');
         }
-        console.log('Rows affected:', results.affectedRows);
     });
+});
+
+app.post('/liked', debuglog, function (req, res) {
+
+    res.redirect('/stream');
+});
+
+app.post('/likedSingle', debuglog, function (req, res) {
+
+    res.redirect('/stream');
 
 });
 
