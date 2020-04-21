@@ -43,28 +43,18 @@
     <fieldset class="pure-g">
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewSingle}}
-            Review For {{name}}</legend>
-        <select name='single_id'>
+
+            Review For: {{name}}</legend>
+        <select style='display:none;' name='single_id'>
             <option value="{{ singleid }}" selected>{{ singleid }}</option>
         </select>
+       
+       
+        <textarea name="review" rows="4" cols="100" style="color: black; width:100%;" placeholder="Say something about {{name}}..."></textarea>
         {{/each}}
-        <div class="reviewSingle" style="background-color: white; color:black;" style="overflow-y: auto;">
-            <div class="pure-u-1 review">
-                <div class="user-info">
-                    <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: blue;"><small>{{ userName }}</small></span></a>
-                </div>
-                <div class="twizzle-content">
-                    {{ content }}
-                </div>
-            </div>
-
-        </div>
-
-        <input name="review" class="pure-u-4-5" style="color: black; width:100%;" placeholder="Say something...">
-        <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post">
-
-
+        <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post"/>
+        <button formaction="/likedAlbum" class="fa fa-thumbs-up green_button counter-btn" style="font-size:48px">
+            Like </button>
     </fieldset>
 </form>
 </div>

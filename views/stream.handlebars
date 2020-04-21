@@ -44,12 +44,15 @@
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">LATEST
             REVIEWS</legend>
         <div class="reviewAlbum" style="background-color: white; color:black;" style="overflow-y: auto;">
-            {{#each reviewAlbum}}
+
+            {{#each reviewAlbum}} 
+            
             <div class="pure-u-1 twizzle">
                 <div class="user-info">
                     <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
-                            style="color: blue;"><small>{{ name }}</small></span></a>
+                            style="color: blue;"><small>{{ name }} on {{music}}</small> </span></a>
                     <span class="when info" style="color: black;">{{ posted }}</span>
+
                 </div>
                 <div class="twizzle-content">
                     {{ content }}
@@ -57,6 +60,7 @@
 
 
             </div>
+
             {{/each}}
         </div>
     </fieldset>

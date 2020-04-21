@@ -23,7 +23,8 @@ app.engine('handlebars', hb({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 //query list
 const query_users = 'SELECT userName FROM user ORDER BY userName;';
-const query_stream = 'SELECT * FROM allreviews ORDER BY posted DESC;';
+
+const query_stream = '(SELECT allreviews.name, allreviews.content, allreviews.posted, album.name AS music FROM album, reviewAlbum, allreviews WHERE album.albumid = reviewalbum.albumID AND reviewAlbum.name = allreviews.name AND reviewAlbum.posted = allreviews.posted) UNION (SELECT allreviews.name, allreviews.content, allreviews.posted, single.name AS music FROM single, reviewsingle, allreviews WHERE single.singleid = reviewsingle.singleID AND reviewSingle.name = allreviews.name AND reviewSingle.posted = allreviews.posted)';
 const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
@@ -338,6 +339,7 @@ app.post('/post_as', debuglog, db, checkAuth, function (req, res) { // use this 
     });
 });
 
+
 app.get('/likepage', debuglog, db, function (req, res) {
     res.render('likepage');
 
@@ -376,6 +378,7 @@ app.post('/liked', debuglog, function (req, res) {
 app.post('/likedSingle', debuglog, function (req, res) {
 
     res.redirect('/stream');
+
 });
 
 app.get('/error', debuglog, db, function (req, res) {

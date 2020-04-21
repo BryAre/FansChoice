@@ -22,7 +22,6 @@
     <p style="font-size: 50px;" ;>
         Look Up Artists
     </p>
-    <label for="user">Artists</label>
     <br/>
 
     
@@ -32,15 +31,16 @@
             <option value="{{ name }}">{{ name }}</option>
             {{/each}}
         </select>
-        <button formaction="/search/artist" class="pure-button pure-button-primary button-style2">Search</button>
+        <button formaction="/search/artist" class="pure-button pure-button-primary button-style2" onclick="TestsFunction()">Search</button>
     </form>
 <div id="TestsDiv" >
 
-    <h1>Artist</h1>
+    <h1 style="text-decoration: underline;">Artist</h1>
     {{#each artists}}
-        <p>{{name}}</p>
+        <h3 style='font-style: italic'><strong>{{name}}</strong></h3>
      {{/each}}
 
+<br/>
 
     <h1>Albums</h1>
             <form method="post"> 
@@ -52,6 +52,7 @@
             <button formaction="/search/artist/reviewAlbum" class="pure-button button-style2">Review</button>
             </form>
 
+<br/>
     <h1>Songs</h1>
             <form method="post"> 
             <select id='test' name="single_name" class="main-text">
@@ -61,7 +62,8 @@
             </select>
             <button formaction="/search/artist/reviewSingle" class="pure-button button-style2">Review</button>
             </form>
-           
+
+           <br/>
 
     <h1>Reviews/Rating</h1>
             {{#each email}}
@@ -70,6 +72,10 @@
 </div>
 
 <script>
+    function TestsFunction() {
+    var T = document.getElementById("TestsDiv");
+    T.style.display = "block";  // <-- Set it to block
+}
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
     function TestsFunction() {
     var T = document.getElementById("TestsDiv");
