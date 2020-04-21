@@ -9,7 +9,7 @@ const port = 3000;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'topline99',
     database: 'fanschoice',
     multipleStatements: true,
     connectionLimit: 4
@@ -24,11 +24,12 @@ app.set('view engine', 'handlebars');
 //query list
 const query_users = 'SELECT userName FROM user ORDER BY userName;';
 
-const query_stream = '(SELECT allreviews.name, allreviews.content, allreviews.posted, album.name AS music FROM album, reviewAlbum, allreviews WHERE album.albumid = reviewalbum.albumID AND reviewAlbum.name = allreviews.name AND reviewAlbum.posted = allreviews.posted) UNION (SELECT allreviews.name, allreviews.content, allreviews.posted, single.name AS music FROM single, reviewsingle, allreviews WHERE single.singleid = reviewsingle.singleID AND reviewSingle.name = allreviews.name AND reviewSingle.posted = allreviews.posted)';
+const query_stream = '((SELECT allreviews.name, allreviews.content, allreviews.posted, album.name AS music FROM album, reviewAlbum, allreviews WHERE album.albumid = reviewalbum.albumID AND reviewAlbum.name = allreviews.name AND reviewAlbum.posted = allreviews.posted) UNION (SELECT allreviews.name, allreviews.content, allreviews.posted, single.name AS music FROM single, reviewsingle, allreviews WHERE single.singleid = reviewsingle.singleID AND reviewSingle.name = allreviews.name AND reviewSingle.posted = allreviews.posted)) ORDER BY posted DESC';
 const query_create_user = 'INSERT INTO user (userName, email) VALUES (?, ?);';
 const query_user_id_from_name = 'SELECT id FROM user WHERE userName = ?;';
 const query_emails = 'SELECT email FROM user ORDER BY email;';
 const query_artist = 'SELECT name from artist;'
+const query_url = 'SELECT url from artist WHERE name = ?;'
 const query_artist_name = 'SELECT name from artist WHERE name = ?;'
 const query_post_revA = 'INSERT INTO reviewAlbum (name, content, albumID) VALUES (?, ?, ?);'; //query fix
 const query_post_revS = 'INSERT INTO reviewSingle (name, content, singleID) VALUES (?, ?, ?);'; //query fix
@@ -219,14 +220,12 @@ app.get('/search', debuglog, db, function (req, res) {
         [query_artist, [req.params.name]],
         [query_albums, [req.params.name]],
         [query_song, [req.params.name]],
-        [query_emails, [req.params.name]]
 
-    ]).then(([artist, album, song, email]) => {
+    ]).then(([artist, album, song]) => {
         let result = {
             artist,
             album,
             song,
-            email
         };
         res.render('search', result);
     }).catch((error) => {
@@ -249,14 +248,14 @@ app.post('/search/artist', debuglog, db, function (req, res) {
         [query_artist_name, [req.body.artist_name]],
         [query_albums, [req.body.artist_name]],
         [query_song, [req.body.artist_name]],
-        [query_emails, [req.body.artist_name]]
-    ]).then(([artist, artists, album, song, email]) => {
+        [query_url, [req.body.artist_name]]
+    ]).then(([artist, artists, album, song, url]) => {
         let result = {
             artist,
             artists,
             album,
             song,
-            email
+            url,
         };
         res.render('search', result);
     }).catch((error) => {
