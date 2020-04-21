@@ -1,6 +1,8 @@
 # Fans Choice 
 
-Hello! Welcome to Fans Choice. Fans Choice is a music ranking platform that allows you to look at top rated albums and singles, and review them. 
+Hello! Welcome to Fans Choice. Fans Choice is a music ranking platform that allows you to look at top rated albums and singles in a database, and review them. Fans Choice was built with websites like MetaCritic in mind, however, MetaCritic has personal admin reviews, and that can cause bias. More importantly, Fans Choice believes that the fans are always right, and therefore, they are the only ones who have a say.
+
+This project was built using NodeJS, Express, and MySql.
 
 ## Installation
 
