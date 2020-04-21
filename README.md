@@ -24,7 +24,19 @@ This project was built using **NodeJS, Express, and MySql.**
 
 5) **`node index.js`**
 
-6) Go to [http://localhost:3000](http://localhost:3000)
+6) Go to [http://localhost:3000](http://localhost:3000
+
+## Capabilities 
+
+1) The ability to look at the top albums
+
+2) The ability to look at the top songs
+
+3) Post a review
+
+4) Like or disliked after posting a review
+
+5) Seeing own review/reviews of others
 
 
 
