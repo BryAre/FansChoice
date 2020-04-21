@@ -31,11 +31,21 @@ Buttons for all different pages of our application, all have a app.post/app,get 
 <!-- 
 Form to submit whether or not you like the song or not, if you didn't, don't press the like button
     -->
+    
 
 <form method="post">
+    <select style='display:none;' name='rais'>
+        {{#each SingleRevID}}
+        <option value={{RA_IS}} selected>{{RA_IS}}</option>
+        {{/each}}
+    </select>
+    <center>
     <h2>Did you like the song?</h2>
-    <button formaction="/likedSingle" class="pure-button button-small">like</button>
+    <input formaction="/likedSingle" value='Like' type="submit" data-index="1" data-inc="1" class="pure-button button-style2" style="background-color: green;"></input>
 
+    <input formaction="/dislikedSingle" value='dislike' type="submit" data-index="1" data-inc="1" class="pure-button button-style3" style="background-color: red;"></input>
+
+    </center>
 </form>
 
 
