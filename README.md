@@ -1,5 +1,5 @@
 # Fans Choice
-
+<iframe src="https://giphy.com/embed/rYReikGDIbRcY" width="480" height="274" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/arnold-schwarzenegger-terminator-2-judgment-day-rYReikGDIbRcY">via GIPHY</a></p>
 ## Installation
 
 1) Install [node.js](https://nodejs.org/en/)
