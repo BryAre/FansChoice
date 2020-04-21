@@ -20,7 +20,6 @@ CREATE TABLE album(
     url VARCHAR(256),
     releaseDate VARCHAR(10) Not Null,
     genre VARCHAR(128),
-    reveiwCount INTEGER,
     trackCount INTEGER,
     recordLabel VARCHAR(128),
     Foreign Key (artistId) references artist(id)
@@ -35,7 +34,6 @@ CREATE TABLE single(
     url VARCHAR(256),
     releaseDate VARCHAR(256) Not Null,
     genre VARCHAR(128),
-    reveiwCount INTEGER,
     recordLabel VARCHAR(128),
     Foreign Key (artistId) references artist(id)
         ON DELETE Set NUll
@@ -46,7 +44,6 @@ Create Table user(
     id INTEGER Unique Primary Key AUTO_INCREMENT, -- automatically sets user
     userName VARCHAR (128) NOT NULL Unique,
     dateJoined DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    reveiwCount INTEGER,
     email VARCHAR(256)
 );
 ALTER TABLE user AUTO_INCREMENT=1200;
@@ -106,37 +103,37 @@ INSERT INTO artist VALUES(00013,'Luke Combs', 'Country', '03-02-1990', 'American
 INSERT INTO artist VALUES(00014,'Beyonce', 'R&B', '09-04-1981', 'American','https://thebeyonceworld.com/wp-content/uploads/2018/09/0011-e1536935210243.jpg');
 INSERT INTO artist VALUES(00015,'Adele', 'Pop', '05-05-1988', 'British','https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/02/17/08/adele-0.jpg');
 -- Album Insertions 
-INSERT INTO album VALUES(00020,00001,'Eternal Atake','https://images.genius.com/73e5eb9c6c73146ec57f8634bb905e01.1000x1000x1.jpg','03-06-2020','Rap',0,18,'Atlantic');
-INSERT INTO album VALUES(00021,00002,'After Hours', 'https://www.rap-up.com/app/uploads/2020/02/the-weeknd-after-hours-1280x720.jpg','03-20-2020','R&B', 0,17,'XO');
-INSERT INTO album VALUES(00022,00003,'Views','https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Drake_-_Views_cover.jpg/220px-Drake_-_Views_cover.jpg','04-29-2016','Rap',0 ,20,'Young Money');
-INSERT INTO album VALUES(00023,00004,'Chilombo','https://consequenceofsound.net/wp-content/uploads/2020/02/Jhene-Aiko-Chilombo-album-cover-artwork.jpg?quality=80','03-06-2020','R&B',0 ,20,'Def Jam');
-INSERT INTO album VALUES(00024,00005,'The Slow Rush','https://upload.wikimedia.org/wikipedia/en/5/54/Tame_Impala_-_The_Slow_Rush.png','02-14-2020','Rock',0,12,'Modular' );
-Insert INTO album Values(00025,00006,'Abbey Road', 'https://vignette.wikia.nocookie.net/beatles/images/e/e9/Beatles_-_abbey_road.jpg/revision/latest?cb=20140524025417','09-26-1969','Rock',0,11,'Apple' );
-INSERT INTO album VALUES(00026,00007,'Anti','https://upload.wikimedia.org/wikipedia/en/3/32/Rihanna_-_Anti.png','01-28-2016','Pop',0,16 ,'Roc Nation' );
-INSERT INTO album VALUES(00027,00008,'Future Nostalgia','https://upload.wikimedia.org/wikipedia/en/f/f5/Dua_Lipa_-_Future_Nostalgia_%28Official_Album_Cover%29.png','03-27-2020','Pop',0,14,'Warner' );
-INSERT INTO album VALUES(00028,00009,'Colores','https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/J_Balvin_-_Colores.png/220px-J_Balvin_-_Colores.png','03-19-2020','Reggaeton',0,10,'Universal Latin');
-INSERT INTO album VALUES(00029,00010,'YHLQMDLG','https://upload.wikimedia.org/wikipedia/en/3/3f/Bad_Bunny_-_Yhlqmdlg.png','02-28-2020','Reggaeton',0,20,'Rimas');
-INSERT INTO album VALUES(00030,00011,'Hot Pink','https://m.media-amazon.com/images/I/71xVNFRJBsL._SS500_.jpg','10-07-2019','Rap', 0,12,'Kemosabe' );
-INSERT INTO album VALUES(00031,00012,'Now','https://express-images.franklymedia.com/6616/sites/1446/2017/06/15085350/Shania-Twain.jpg','09-29-2017', 'Country',0,16,'Nercury Nashville');
-INSERT INTO album VALUES(00032,00013,'The Prequel','https://upload.wikimedia.org/wikipedia/en/thumb/4/40/Luke_Combs_-_The_Prequel.png/220px-Luke_Combs_-_The_Prequel.png','07-07-2019', 'Country',0,5,'Columbia');
-INSERT INTO album VALUES(00033,00014,'4','https://img1.wsimg.com/isteam/ip/cb3ce1fc-5c02-402d-969e-20db76dcd7c3/d5llarv-36e7a563-e679-43e5-b6b3-df8a1bb58639.jpg','06-24-2011', 'R&B',0,14,'Parkwood');
-INSERT INTO album VALUES(00034,00015,'25','https://media.thehypemagazine.com/wp-content/uploads/2016/06/ADELE-25.jpg','11-20-2015', 'Pop',0,14,'XL');
+INSERT INTO album VALUES(00020,00001,'Eternal Atake','https://images.genius.com/73e5eb9c6c73146ec57f8634bb905e01.1000x1000x1.jpg','03-06-2020','Rap',18,'Atlantic');
+INSERT INTO album VALUES(00021,00002,'After Hours', 'https://www.rap-up.com/app/uploads/2020/02/the-weeknd-after-hours-1280x720.jpg','03-20-2020','R&B',17,'XO');
+INSERT INTO album VALUES(00022,00003,'Views','https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Drake_-_Views_cover.jpg/220px-Drake_-_Views_cover.jpg','04-29-2016','Rap',20,'Young Money');
+INSERT INTO album VALUES(00023,00004,'Chilombo','https://consequenceofsound.net/wp-content/uploads/2020/02/Jhene-Aiko-Chilombo-album-cover-artwork.jpg?quality=80','03-06-2020','R&B',20,'Def Jam');
+INSERT INTO album VALUES(00024,00005,'The Slow Rush','https://upload.wikimedia.org/wikipedia/en/5/54/Tame_Impala_-_The_Slow_Rush.png','02-14-2020','Rock',12,'Modular');
+Insert INTO album Values(00025,00006,'Abbey Road', 'https://vignette.wikia.nocookie.net/beatles/images/e/e9/Beatles_-_abbey_road.jpg/revision/latest?cb=20140524025417','09-26-1969','Rock',11,'Apple' );
+INSERT INTO album VALUES(00026,00007,'Anti','https://upload.wikimedia.org/wikipedia/en/3/32/Rihanna_-_Anti.png','01-28-2016','Pop',16 ,'Roc Nation' );
+INSERT INTO album VALUES(00027,00008,'Future Nostalgia','https://upload.wikimedia.org/wikipedia/en/f/f5/Dua_Lipa_-_Future_Nostalgia_%28Official_Album_Cover%29.png','03-27-2020','Pop',14,'Warner' );
+INSERT INTO album VALUES(00028,00009,'Colores','https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/J_Balvin_-_Colores.png/220px-J_Balvin_-_Colores.png','03-19-2020','Reggaeton',10,'Universal Latin');
+INSERT INTO album VALUES(00029,00010,'YHLQMDLG','https://upload.wikimedia.org/wikipedia/en/3/3f/Bad_Bunny_-_Yhlqmdlg.png','02-28-2020','Reggaeton',20,'Rimas');
+INSERT INTO album VALUES(00030,00011,'Hot Pink','https://m.media-amazon.com/images/I/71xVNFRJBsL._SS500_.jpg','10-07-2019','Rap', 12,'Kemosabe' );
+INSERT INTO album VALUES(00031,00012,'Now','https://express-images.franklymedia.com/6616/sites/1446/2017/06/15085350/Shania-Twain.jpg','09-29-2017', 'Country',16,'Nercury Nashville');
+INSERT INTO album VALUES(00032,00013,'The Prequel','https://upload.wikimedia.org/wikipedia/en/thumb/4/40/Luke_Combs_-_The_Prequel.png/220px-Luke_Combs_-_The_Prequel.png','07-07-2019', 'Country',5,'Columbia');
+INSERT INTO album VALUES(00033,00014,'4','https://img1.wsimg.com/isteam/ip/cb3ce1fc-5c02-402d-969e-20db76dcd7c3/d5llarv-36e7a563-e679-43e5-b6b3-df8a1bb58639.jpg','06-24-2011', 'R&B',14,'Parkwood');
+INSERT INTO album VALUES(00034,00015,'25','https://media.thehypemagazine.com/wp-content/uploads/2016/06/ADELE-25.jpg','11-20-2015', 'Pop',14,'XL');
 -- Single Insertions
-INSERT INTO single VALUES(00040,00001,'That Way','https://i.ytimg.com/vi/PR-duMh19FY/maxresdefault.jpg','03-01-2020','Rap',0,'Atlantic');
-INSERT INTO single VALUES(00041,00002,'Heartless','https://upload.wikimedia.org/wikipedia/en/7/78/The_Weeknd_-_Heartless.png','11-27-2019','R&B',0,'XO');
-INSERT INTO single VALUES(00042,00003,'Toosie Slide','https://o2hype.com/wp-content/uploads/2020/04/Drake-Toosie-Slide-300x300.jpg','04-03-2020','Rap',0,'OVO');
-INSERT INTO single VALUES(00043,00008,'Dont Start Now','https://i.ytimg.com/vi/htg8v0g_4e4/maxresdefault.jpg','11-01-2019','Pop',0,'Warner');
-INSERT INTO single VALUES(00044,00010,'La Dificil','https://assets.vogue.com/photos/5e615f5ce40455000851ede8/16:9/w_1280,c_limit/00_social.jpg','02-29-2020','Reggaeton',0,'Rimas');
-INSERT INTO single VALUES(00045,00011,'Say So','https://upload.wikimedia.org/wikipedia/en/d/df/Say_So_-_Doja_Cat.png','01-28-2020','Rap',0,'Kemosabe');
-INSERT INTO single VALUES(00046,00013,'Does to Me','https://i.ytimg.com/vi/17fnUqLdm7o/maxresdefault.jpg','02-10-2020','Country',0,'Colombia');
-INSERT INTO single VALUES(00047,00002,'Blinding Lights','https://www.rollingstone.com/wp-content/uploads/2020/02/TheWeeknd.jpg','11-29-2019','R&B',0,'XO');
-INSERT INTO single VALUES(00048,00005,'It Might Be Time','https://upload.wikimedia.org/wikipedia/en/a/a7/Tame_Impala_-_It_Might_Be_Time.jpg','11-29-2019','Rock',0,'Modular');
-INSERT INTO single VALUES(00049,00001,'Futsul Shuffle 2020','https://i.ytimg.com/vi/awtYiVGXiaY/maxresdefault.jpg','12-13-2019','Rap',0,'Atlantic');
+INSERT INTO single VALUES(00040,00001,'That Way','https://i.ytimg.com/vi/PR-duMh19FY/maxresdefault.jpg','03-01-2020','Rap','Atlantic');
+INSERT INTO single VALUES(00041,00002,'Heartless','https://upload.wikimedia.org/wikipedia/en/7/78/The_Weeknd_-_Heartless.png','11-27-2019','R&B','XO');
+INSERT INTO single VALUES(00042,00003,'Toosie Slide','https://o2hype.com/wp-content/uploads/2020/04/Drake-Toosie-Slide-300x300.jpg','04-03-2020','Rap','OVO');
+INSERT INTO single VALUES(00043,00008,'Dont Start Now','https://i.ytimg.com/vi/htg8v0g_4e4/maxresdefault.jpg','11-01-2019','Pop','Warner');
+INSERT INTO single VALUES(00044,00010,'La Dificil','https://assets.vogue.com/photos/5e615f5ce40455000851ede8/16:9/w_1280,c_limit/00_social.jpg','02-29-2020','Reggaeton','Rimas');
+INSERT INTO single VALUES(00045,00011,'Say So','https://upload.wikimedia.org/wikipedia/en/d/df/Say_So_-_Doja_Cat.png','01-28-2020','Rap','Kemosabe');
+INSERT INTO single VALUES(00046,00013,'Does to Me','https://i.ytimg.com/vi/17fnUqLdm7o/maxresdefault.jpg','02-10-2020','Country','Colombia');
+INSERT INTO single VALUES(00047,00002,'Blinding Lights','https://www.rollingstone.com/wp-content/uploads/2020/02/TheWeeknd.jpg','11-29-2019','R&B','XO');
+INSERT INTO single VALUES(00048,00005,'It Might Be Time','https://upload.wikimedia.org/wikipedia/en/a/a7/Tame_Impala_-_It_Might_Be_Time.jpg','11-29-2019','Rock','Modular');
+INSERT INTO single VALUES(00049,00001,'Futsul Shuffle 2020','https://i.ytimg.com/vi/awtYiVGXiaY/maxresdefault.jpg','12-13-2019','Rap','Atlantic');
 -- user insertions
-INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('ali123','2018-02-06 01:41:12',0,'aliproahmed@gmail.com');
-INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('bryan123','2019-06-07 11:03:01',0,'bryanalverez23@gmail.com');
-INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('md123','2020-03-03 03:02:05',0,'mrahman23@gmail.com');
-INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('rickwtm72','2017-01-02 04:03:02',0,'jerrysucksballs@gmail.com');
+INSERT INTO user (userName, dateJoined,  email)VALUES('ali123','2018-02-06 01:41:12','aliproahmed@gmail.com');
+INSERT INTO user (userName, dateJoined,  email)VALUES('bryan123','2019-06-07 11:03:01','bryanalverez23@gmail.com');
+INSERT INTO user (userName, dateJoined,  email)VALUES('md123','2020-03-03 03:02:05','mrahman23@gmail.com');
+INSERT INTO user (userName, dateJoined,  email)VALUES('rickwtm72','2017-01-02 04:03:02','jerrysucksballs@gmail.com');
 
 -- review album insertions 
 INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',true);
