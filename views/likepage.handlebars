@@ -32,12 +32,16 @@ Buttons for all different pages of our application, all have a app.post/app,get 
 Form to submit whether or not you like the album or not, if you didn't, don't press the like button
     -->
 <form method="post">
+    <select style='color:black; display:none;' name='RAID'>
+        {{#each AlbumRevID}}
+        <option value={{RA_ID}} selected>{{RA_ID}}</option>
+        {{/each}}
+    </select>
+    <center>
     <h2>Did you like the album?</h2>
-    <button formaction="/liked" class="pure-button button-small">like</button>
-    <button formaction="/likedp" class="fa fa-thumbs-up green_button counter-btn" id="increase1" type="button"
-        data-index="1" data-inc="1" style="font-size:48px">like
-    </button>
-
+    <input formaction="/likedAlbum" style="background-color: green;" value='Like' type="submit" data-index="1" data-inc="1" class="pure-button button-style2" ></input>
+    <input formaction="/dislikedAlbum" value='dislike' type="submit" data-index="1" data-inc="1" class="pure-button button-style3" style="background-color: red;"></input>
+</center>
 </form>
 
 </div>

@@ -45,9 +45,14 @@ const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
 const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
 
 
-const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE albumID = ? AND name = ?;';
-const query_disliked_album = 'UPDATE reviewAlbum SET liked = false WHERE albumID = ? AND name = ?;';
-const query_liked_single = 'UPDATE reviewSingle SET liked = true WHERE singleID = ? AND name = ?;';
+const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE RA_ID = ? AND name = ?;';
+const query_disliked_album = 'UPDATE reviewAlbum SET liked = false WHERE RA_ID = ? AND name = ?;';
+const query_liked_single = 'UPDATE reviewSingle SET liked = true WHERE RA_IS = ? AND name = ?;';
+
+const query_disliked_single = 'UPDATE reviewSingle SET liked = false WHERE RA_IS = ? AND name = ?;';
+
+const query_raid = 'SELECT RA_ID FROM reviewalbum WHERE RA_ID = (SELECT MAX(RA_ID) FROM reviewalbum)';
+const query_rais = 'SELECT RA_IS FROM reviewsingle WHERE RA_IS = (SELECT MAX(RA_IS) FROM reviewsingle)';
 
 //checks to see if user is logged in
 function checkAuth(req, res, next) {
@@ -332,71 +337,132 @@ app.post('/api/user', debuglog, db, function (req, res) {
         res.redirect(302, '/');
     });
 });
-//used for posting an album review
+//used for posting an album review, this inserts username, content of review, and the album being reviewed. Likes/dislikes come later
 app.post('/post_ar', debuglog, db, checkAuth, function (req, res) { // use this for review page
-    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
-        if (error) {
-            res.render('error', { error });
-        } else {
-            res.redirect(302, '/likepage');
-        }
+    query_chain(req.connection, [
+        [query_post_revA, [req.session.user_name, req.body.review, req.body.album_id]],
+        [query_raid]
+    ]).then(([reviewAlbum,AlbumRevID]) => {
+        let result = {
+            reviewAlbum,
+            AlbumRevID,
+        };
+        res.render('likepage', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
     });
 });
 
 //same as above but used for single review
 app.post('/post_as', debuglog, db, checkAuth, function (req, res) { // use this for review page
-    req.connection.query(query_post_revS, [req.session.user_name, req.body.review, req.body.single_id], (error, stream, fields) => {
-        if (error) {
-            res.render('error', { error });
-        } else {
-            res.redirect(302, '/likepageSingles');
-        }
+    query_chain(req.connection, [
+        [query_post_revS, [req.session.user_name, req.body.review, req.body.single_id]],
+        [query_rais]
+    ]).then(([reviewAlbum,SingleRevID]) => {
+        let result = {
+            reviewAlbum,
+            SingleRevID,
+        };
+        res.render('likepageSingles', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
     });
 });
+
 
 //Like pages for albums after a review is posted
 app.get('/likepage', debuglog, db, function (req, res) {
-    res.render('likepage');
+    res.render('likepage')
+});
+app.post('/likepage', debuglog, db, function (req, res) {
+    res.redirect('/likepage');
+});
+app.post('/likedAlbum', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    query_chain(req.connection, [
+        [query_liked_album, [req.body.RAID, req.session.user_name]],
+        [query_stream, [req.params.name]],
+    ]).then(([LIKEDAlbum, reviewAlbum]) => {
+        let result = {
+            LIKEDAlbum,
+            reviewAlbum,
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });    
 
 });
-//Inserts the value of the review, who posted it, and what album it was posted about
-app.post('/likepage', debuglog, db, checkAuth, function (req, res) { // use this for review page
-    req.connection.query(query_post_revA, [req.session.user_name, req.body.review, req.body.album_id], (error, stream, fields) => {
-        if (error) {
-            res.render('error', { error });
-        } else {
-            res.redirect(302, '/likepage');
-        }
+//dislike button action if the song is disliked by user
+app.post('/dislikedAlbum', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    query_chain(req.connection, [
+        [query_disliked_album, [req.body.RAID, req.session.user_name]],
+        [query_stream, [req.params.name]],
+    ]).then(([LIKEDAlbum, reviewAlbum]) => {
+        let result = {
+            LIKEDAlbum,
+            reviewAlbum,
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
     });
+
 });
 
 //Like pages for singles after a review is posted
 app.get('/likepageSingles', debuglog, db, function (req, res) {
-    res.render('likepageSingles');
-
+    res.render('likepageSingles')
 });
 
-//Inserts the value of the review, who posted it, and what single it was posted about
 app.post('/likepageSingles', debuglog, db, checkAuth, function (req, res) { // use this for review page
-    req.connection.query(query_post_revS, [req.session.user_name, req.body.review, req.body.single_id], (error, stream, fields) => {
-        if (error) {
-            res.render('error', { error });
-        } else {
-            res.redirect(302, '/likepageSingles');
-        }
-    });
+    res.redirect('/likepageSingles')
 });
 
-//Used for button to like an album
-app.post('/liked', debuglog, function (req, res) {
+//like button changes value of if the user liked it to true
+app.post('/likedSingle', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    query_chain(req.connection, [
+        [query_liked_single, [req.body.rais, req.session.user_name]],
+        [query_stream, [req.params.name]],
+    ]).then(([LIKEDsingle, reviewAlbum]) => {
+        let result = {
+            LIKEDsingle,
+            reviewAlbum,
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });    
 
-    res.redirect('/stream');
 });
 
-//Used for button to like a single
-app.post('/likedSingle', debuglog, function (req, res) {
-
-    res.redirect('/stream');
+//Dislike button changes value of if the user liked it to false
+app.post('/dislikedSingle', debuglog, db, checkAuth, function (req, res) { // use this for review page
+    query_chain(req.connection, [
+        [query_disliked_single, [req.body.rais, req.session.user_name]],
+        [query_stream, [req.params.name]],
+    ]).then(([LIKEDsingle, reviewAlbum]) => {
+        let result = {
+            LIKEDsingle,
+            reviewAlbum,
+            stream_name: req.params.name,
+            user_name: req.session.user_name
+        };
+        res.render('stream', result); 
+    }).catch((error) => {
+        console.log(error);
+        res.render('error', { error });
+    });    
 
 });
 
