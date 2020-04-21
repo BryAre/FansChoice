@@ -8,7 +8,8 @@ CREATE TABLE artist(
     name VARCHAR(128) Not NUll,
     genre VARCHAR(128),
     DOB VARCHAR(10),
-    nationality VARCHAR(128)
+    nationality VARCHAR(128),
+    url VARCHAR (256)
 );
 
 DROP TABLE IF EXISTS album;
@@ -87,21 +88,21 @@ END $$
 
 
 -- Artist Insertions
-INSERT INTO artist VALUES(00001,'Lil Uzi Vert', 'Rap', '07-31-1994', 'American' );
-INSERT INTO artist VALUES(00002,'The Weeknd', 'R&B', '02-16-1990', 'Canadian' );
-INSERT INTO artist VALUES(00003,'Drake', 'Rap', '10-24-1986', 'Canadian' );
-INSERT INTO artist VALUES(00004,'Jhene Aiko', 'R&B', '03-16-1988', 'American' );
-INSERT INTO artist VALUES(00005,'Tame Impala', 'Rock', Null, 'American');
-Insert INTO artist Values(00006,'The Beatles', 'Rock', Null, 'British');
-INSERT INTO artist VALUES(00007,'Rihanna', 'Pop', '02-20-1988', 'Barbadian');
-INSERT INTO artist VALUES(00008,'Dua Lipa', 'Pop', '08-22-1995', 'British');
-INSERT INTO artist VALUES(00009,'J Balvin', 'Reggaeton', '05-07-1985', 'Colombian' );
-INSERT INTO artist VALUES(00010,'Bad Bunny', 'Reggaeton', '03-10-1994', 'Puerto Rican');
-INSERT INTO artist VALUES(00011,'Doja Cat', 'Rap', '10-21-1995', 'American');
-INSERT INTO artist VALUES(00012,'Shania Twain', 'Country', '08-28-1965', 'Canadian');
-INSERT INTO artist VALUES(00013,'Luke Combs', 'Country', '03-02-1990', 'American');
-INSERT INTO artist VALUES(00014,'Beyonce', 'R&B', '09-04-1981', 'American');
-INSERT INTO artist VALUES(00015,'Adele', 'Pop', '05-05-1988', 'British');
+INSERT INTO artist VALUES(00001,'Lil Uzi Vert', 'Rap', '07-31-1994', 'American', 'https://townsquare.media/site/812/files/2020/03/lil-uzi-vert-best-songs.jpg?w=980&q=75');
+INSERT INTO artist VALUES(00002,'The Weeknd', 'R&B', '02-16-1990', 'Canadian', 'https://pbs.twimg.com/media/EUYIwiwUUAEvrT3.jpg');
+INSERT INTO artist VALUES(00003,'Drake', 'Rap', '10-24-1986', 'Canadian', 'https://www.rap-up.com/app/uploads/2020/04/drake-atl.jpg');
+INSERT INTO artist VALUES(00004,'Jhene Aiko', 'R&B', '03-16-1988', 'American','https://urbanislandz.com/wp-content/uploads/2019/04/Jhene-Aiko.jpg' );
+INSERT INTO artist VALUES(00005,'Tame Impala', 'Rock', Null, 'American','https://www.nme.com/wp-content/uploads/2016/12/2015TameImpala-pg-13280515-1-630x420.jpg');
+Insert INTO artist Values(00006,'The Beatles', 'Rock', Null, 'British','https://www.nme.com/wp-content/uploads/2019/04/GettyImages-451898937_BEATLES_2000.jpg');
+INSERT INTO artist VALUES(00007,'Rihanna', 'Pop', '02-20-1988', 'Barbadian','https://i.insider.com/5e73d8a3c4854067901764f7?width=1100&format=jpeg&auto=webp');
+INSERT INTO artist VALUES(00008,'Dua Lipa', 'Pop', '08-22-1995', 'British','https://metro.co.uk/wp-content/uploads/2017/10/pri_56758289.jpg?quality=90&strip=all');
+INSERT INTO artist VALUES(00009,'J Balvin', 'Reggaeton', '05-07-1985', 'Colombian','https://specials-images.forbesimg.com/imageserve/5e850757ff6c160006cdb210/960x0.jpg?fit=scale' );
+INSERT INTO artist VALUES(00010,'Bad Bunny', 'Reggaeton', '03-10-1994', 'Puerto Rican','https://cdn3.pitchfork.com/longform/976/badbunnyheader.jpg');
+INSERT INTO artist VALUES(00011,'Doja Cat', 'Rap', '10-21-1995', 'American','https://i.ytimg.com/vi/mXnJqYwebF8/maxresdefault.jpg');
+INSERT INTO artist VALUES(00012,'Shania Twain', 'Country', '08-28-1965', 'Canadian','https://media.vanityfair.com/photos/5addee6da342ec2552ce87a3/3:2/w_1998,h_1332,c_limit/t-Shania-Twain-Trump.jpg');
+INSERT INTO artist VALUES(00013,'Luke Combs', 'Country', '03-02-1990', 'American','https://shawglobalnews.files.wordpress.com/2019/02/luke-combs-5.jpg?quality=70&strip=all');
+INSERT INTO artist VALUES(00014,'Beyonce', 'R&B', '09-04-1981', 'American','https://thebeyonceworld.com/wp-content/uploads/2018/09/0011-e1536935210243.jpg');
+INSERT INTO artist VALUES(00015,'Adele', 'Pop', '05-05-1988', 'British','https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/02/17/08/adele-0.jpg');
 -- Album Insertions 
 INSERT INTO album VALUES(00020,00001,'Eternal Atake','03-06-2020','Rap',0,18,'Atlantic');
 INSERT INTO album VALUES(00021,00002,'After Hours', '03-20-2020','R&B', 0,17,'XO');
@@ -136,11 +137,11 @@ INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('md123','2020-
 INSERT INTO user (userName, dateJoined, reveiwCount, email)VALUES('rickwtm72','2017-01-02 04:03:02',0,'jerrysucksballs@gmail.com');
 
 -- review album insertions 
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',false);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('ali123', 00020,'2020-03-28 02:02:01','soooooooooo goooooood',false);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-30 02:02:01','BABY PLUTOOO!',false);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-27 02:02:01','Handsdown Uzis best album!!',true);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('ali123', 00020,'2020-03-28 02:02:01','soooooooooo goooooood',true);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00020,'2020-03-30 02:02:01','BABY PLUTOOO!',true);
 INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('rickwtm72',00021,'2020-03-29 05:25:13','Amazing album!! Reminds me of the Old Weeknd!',true);
-INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',false);
+INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00028,'2020-03-22 06:29:29','Solid Album. Like the Concept!',true);
 INSERT INTO reviewAlbum (name, albumID, posted, content, liked) VALUES('bryan123',00022,'2020-03-24 09:13:38','Couldve been better! Some of the beats sound repetitive',true);
 
 -- -- review single insertions 
@@ -154,12 +155,12 @@ INSERT INTO reviewSingle (name, singleID, posted, content, liked) VALUES('md123'
 
 CREATE VIEW allreviews AS
     SELECT name, content, posted, RA_ID, liked FROM
-        ((SELECT name, content, posted, RA_ID, liked
+        ((SELECT name, content, posted, RA_ID, liked 
             FROM reviewAlbum
             WHERE deleted is NULL
             )
         UNION
-        (SELECT name,  content, posted, RA_IS, liked
+        (SELECT name, content, posted, RA_IS, liked
             FROM reviewSingle
             WHERE deleted IS NULL)) T;
 
