@@ -5,69 +5,26 @@
         FANS CHOICE
     </h1>
     <br />
-
-<!-- 
-Buttons for all different pages of our application, all have a app.post/app,get function for each 
-    -->
-
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
         <button formaction="/stream" class="pure-button button-small">HOME</button>
         <button formaction="/albums" class="pure-button button-small">TOP ALBUMS</button>
         <button formaction="/songs" class="pure-button button-small">TOP SONGS</button>
         <button formaction="/search" class="pure-button button-small">Search</button>
-
     </form>
 </div>
 
 <br /><br />
-</section>
-
-<!-- 
-
-This section of images is just a placeholder with a cool zoom on hover animation to 
-make the page look less empty. This can be seen on a lot of different pages.
-
--->
-
-<section class="portfolio-block photography">
-    <div class="container">
-        <div class="row no-gutters">
-            <div class="col-md-6 col-lg-4 item zoom-on-hover"><a href="#"><img class="img-fluid image"
-                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
-
-            </div>
-            <div class="col-md-6 col-lg-4 item zoom-on-hover middleImage"><a href="#"><img class="img-fluid image"
-                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
-
-            </div>
-            <div class="col-md-6 col-lg-4 item zoom-on-hover rightImage"><a href="#"><img class="img-fluid image"
-                        src="https://djbooth.net/.image/t_share/MTY5MTAxNzM3MTg4MjcxMzkz/best-albums-of-2019-final-dec.jpg" /></a>
-
-            </div>
-        </div>
-        <br /><br />
-</section>
-
 <br /><br />
-
-<!-- 
-
-Review page for albums, where we sent the album information that is being reviewed,
-we list the album name next to a review for: so the user knows what they're reviewing.
-
-reviewAlbum holds the content of the query that got the information of the album, and name
-is the attribute holding the album name.
-
-the hidden select values are so we can easily pass values to ourselves in the post requests. values such 
-as the albumid or the album name
-
---> 
+    <center>
+    {{#each url}}
+        <img src={{url}} alt="Smiley face" height="400" width="400">
+     {{/each}}
+     </center>
 <form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post_ar">
     <fieldset class="pure-g">
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">
             {{#each reviewAlbum}}
-
             Review For: {{name}}</legend>
         <select style='display:none;' name='album_id'>
             <option  value="{{ albumid }}" selected>{{ albumid }}</option>
@@ -75,14 +32,6 @@ as the albumid or the album name
         <select style='display:none;' name='album_name'>
             <option  value="{{ name }}" selected>{{ name }}</option>
         </select>
-        
-<!-- 
-
-Textarea here is just a text box where the user can write all that they want, once it's submitted, it's instantly updated on the database
-to show what they wrote, what they wrote it about, and when it was submitted.
-
--->
-
         <textarea name="review" rows="4" cols="100" style="color: black; width:100%;" placeholder="Say something about {{name}}..."></textarea>
         {{/each}}
         <input id="review" class="pure-u-1-5 pure-button pure-button-primary" type="submit" value="Post"/>
@@ -92,10 +41,6 @@ to show what they wrote, what they wrote it about, and when it was submitted.
 
     </fieldset>
 </form>
-
-
-
-
 </div>
 
 <script>
