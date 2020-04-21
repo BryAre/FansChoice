@@ -43,7 +43,8 @@ const query_singles_name = 'select * from single where single.name = ?;';
 const query_song = 'SELECT single.name FROM artist,single WHERE single.artistid = artist.id and artist.name= ?;';
 const query_topsingles = 'select name from sumlikessingle ORDER BY TOTAL DESC;';
 const query_topalbums = 'select name from sumlikesalbum ORDER BY TOTAL DESC;';
-
+const query_urlalbum = 'SELECT url from album WHERE album.name = ?;'
+const query_urlsingle = 'SELECT url from single WHERE single.name = ?;'
 
 const query_liked_album = 'UPDATE reviewAlbum SET liked = true WHERE RA_ID = ? AND name = ?;';
 const query_disliked_album = 'UPDATE reviewAlbum SET liked = false WHERE RA_ID = ? AND name = ?;';
@@ -178,7 +179,6 @@ app.get('/stream', debuglog, db, function (req, res) {
     //console.log(req.params.name, req.session.user_name, req.params.name === req.session.user_name);
     query_chain(req.connection, [
         [query_stream, [req.params.name]],
-
     ]).then(([reviewAlbum]) => {
         let result = {
             reviewAlbum,
@@ -294,9 +294,11 @@ app.post('/search/artist/reviewAlbum', debuglog, db, function (req, res) {
     console.log(req.body.album_name);
     query_chain(req.connection, [
         [query_albums_name, [req.body.album_name]],
-    ]).then(([reviewAlbum]) => {
+        [query_urlalbum, [req.body.album_name]],
+    ]).then(([reviewAlbum, url]) => {
         let result = {
             reviewAlbum,
+            url,
         };
         res.render('reviewAlbum', result); 
     }).catch((error) => {
@@ -312,9 +314,11 @@ app.post('/search/artist/reviewSingle', debuglog, db, function (req, res) {
     }
     query_chain(req.connection, [
         [query_singles_name, [req.body.single_name]],
-    ]).then(([reviewSingle]) => {
+        [query_urlsingle, [req.body.single_name]],
+    ]).then(([reviewSingle,url]) => {
         let result = {
             reviewSingle,
+            url,
         };
         res.render('reviewSingle', result);
     }).catch((error) => {

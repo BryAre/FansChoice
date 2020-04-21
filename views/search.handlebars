@@ -1,11 +1,18 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+
 <div class="header">
     <h1 class="frontpage">
         FANS CHOICE
     </h1>
     <br />
+
+<!-- 
+Buttons for all different pages of our application, all have a app.post/app,get function for each 
+    -->
+
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
         <button formaction="/stream" class="pure-button button-small">HOME</button>
@@ -20,8 +27,16 @@
     <p style="font-size: 50px;" ;>
         Look Up Artists
     </p>
-    <label for="user">Artists</label>
     <br/>
+
+    <!-- 
+This initial form populates the drop down menu with information from the database,
+more specifically just artist names
+
+artist holds the query information for select name from artist
+and name is the attribute we're populating into the options
+
+    -->
     <form method="post">
         <select id='test' name="artist_name" class="main-text">
             {{#each artist}}
@@ -31,13 +46,28 @@
         <button formaction="/search/artist" class="pure-button pure-button-primary button-style2">Search</button>
     </form>
 <div id="TestsDiv" >
-    <h1>Artist</h1>
+
+<!-- 
+    Here we populate the area underneath the select options for the artist 
+    with more information about the artist, such as 
+
+    Name again but with picture ({{url}})
+    albums {{album}} to list the artist's albums
+    songs {{song}} to list all their songs
+
+    and buttons next to the drop down so that you can review
+    whichever album/song you would like.
+-->
+    <h1 style="text-decoration: underline;">Artist</h1>
     {{#each artists}}
-        <p>{{name}}</p>
+        <h3 style='font-style: italic'><strong>{{name}}</strong></h3>
      {{/each}}
      {{#each url}}
         <img src={{url}} alt="Smiley face" height="400" width="400">
      {{/each}}
+
+<br/>
+
     <h1>Albums</h1>
             <form method="post"> 
             <select id='test' name="album_name" class="main-text">
@@ -48,6 +78,7 @@
             <button formaction="/search/artist/reviewAlbum" class="pure-button button-style2">Review</button>
             </form>
 
+<br/>
     <h1>Songs</h1>
             <form method="post"> 
             <select id='test' name="single_name" class="main-text">
@@ -56,17 +87,13 @@
             {{/each}}
             </select>
             <button formaction="/search/artist/reviewSingle" class="pure-button button-style2">Review</button>
-            </form>          
-    <h1>Reviews/Rating</h1>
-            {{#each email}}
-            {{/each}}
+            </form>
+
+           <br/>
+
 </div>
 </div>
 
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-    function TestsFunction() {
-    var T = document.getElementById("TestsDiv");
-    T.style.display = "block";  // <-- Set it to block
-}
 </script>

@@ -176,6 +176,3 @@ Create VIEW singlelikestotal AS
 -- use this table for top singles
 CREATE VIEW sumlikessingle AS 
     select singleid, name, sum(liked) as Total from singlelikestotal GROUP BY name;
-
-
-
