@@ -8,6 +8,11 @@
         FANS CHOICE
     </h1>
     <br />
+
+<!-- 
+Buttons for all different pages of our application, all have a app.post/app,get function for each 
+    -->
+
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
         <button formaction="/stream" class="pure-button button-small">HOME</button>
@@ -24,7 +29,14 @@
     </p>
     <br/>
 
-    
+    <!-- 
+This initial form populates the drop down menu with information from the database,
+more specifically just artist names
+
+artist holds the query information for select name from artist
+and name is the attribute we're populating into the options
+
+    -->
     <form method="post">
         <select id='test' name="artist_name" class="main-text">
             {{#each artist}}
@@ -35,6 +47,17 @@
     </form>
 <div id="TestsDiv" >
 
+<!-- 
+    Here we populate the area underneath the select options for the artist 
+    with more information about the artist, such as 
+
+    Name again but with picture ({{url}})
+    albums {{album}} to list the artist's albums
+    songs {{song}} to list all their songs
+
+    and buttons next to the drop down so that you can review
+    whichever album/song you would like.
+-->
     <h1 style="text-decoration: underline;">Artist</h1>
     {{#each artists}}
         <h3 style='font-style: italic'><strong>{{name}}</strong></h3>
@@ -72,13 +95,5 @@
 </div>
 
 <script>
-    function TestsFunction() {
-    var T = document.getElementById("TestsDiv");
-    T.style.display = "block";  // <-- Set it to block
-}
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-    function TestsFunction() {
-    var T = document.getElementById("TestsDiv");
-    T.style.display = "block";  // <-- Set it to block
-}
 </script>

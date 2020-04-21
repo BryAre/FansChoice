@@ -4,6 +4,18 @@
     <h2 class="subtitle">THE FANS ARE ALWAYS RIGHT</h2>
     <br /><br /><br />
 </div>
+
+<!-- 
+    Login page
+
+    results is holding the values of the query which calls on the usernames for registered users
+
+    userName is the attribute that we want to display
+
+    All this is encased in a form, because you're submitting login information to sign into a user
+
+-->
+
 <div style="display:inline-flex">
     <div class="content">
         <form class="" method="post">
@@ -23,6 +35,11 @@
             </fieldset>
         </form>
 
+<!-- 
+    Form to create user if you didn't want to login as an existing one
+
+    with error handling if the user with the exact same name is being made
+-->
         <form id="create-user" class="pure-form-stacked" style="padding-top: 23px;" action="/api/user" method="post">
             <fieldset>
                 <legend>
@@ -46,10 +63,11 @@
         </form>
     </div>
 
+<!-- Breif summary of what we are and why this website is a thing. -->
     <div>
         <h3 class="content">Fan's Choice is here to give the fans their voice. The only reviews that matter here are the
-            reviews from fans of the music themselves .Sign up, comment, and review on Fan's Choice, the premiere web
-            app for up to date music news. </h3>
+            reviews from fans of the music themselves. Sign up, comment, and review on Fan's Choice, the premiere web
+            app for up to date music ratings and reviews. </h3>
     </div>
 </div>
 

@@ -4,6 +4,11 @@
         FANS CHOICE
     </h1>
     <br />
+
+<!-- 
+Buttons for all different pages of our application, all have a app.post/app,get function for each 
+    -->
+
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
         <button formaction="/stream" class="pure-button button-small">Home</button>
@@ -14,7 +19,19 @@
 
 </div>
 <br /><br /><br />
-<div id="TestsDiv">
+<div>
+
+<!-- 
+
+songs is pagged as our most liked/highest rated songs listing from top to bottom
+
+#each = for each 
+/each = end of loop
+
+singlenames is the passed list variable containing all single names in descending order from top ranked
+
+name is the query attribute that we want to show (which is the single/song name)
+-->
     <center>
         <h1>Single Rankings (Top few)</h1>
         {{#each singlenames}}
@@ -24,11 +41,8 @@
         {{/each}}
     </center>
 </div>
-</div>>
+</div>
+
 <script>
     $("span.when").each((_, e) => e.innerHTML = moment(e.innerHTML).fromNow());
-    function TestsFunction() {
-        var T = document.getElementById("TestsDiv");
-        T.style.display = "block";  // <-- Set it to block
-    }
 </script>
