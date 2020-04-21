@@ -5,17 +5,6 @@
         FANS CHOICE
     </h1>
     <br />
-
-<!-- 
-    Stream is basically the main page, where
-    all the reviews are listed from most recent to recent.
-
-    This page is also the hub to connect to all other pages.
--->
-
-    <!-- 
-Buttons for all different pages of our application, all have a app.post/app,get function for each 
-    -->
     <form method="post">
         <button formaction="/logout" class="pure-button button-small">logout</button>
         <button formaction="/stream" class="pure-button button-small">HOME</button>
@@ -29,10 +18,6 @@ Buttons for all different pages of our application, all have a app.post/app,get 
 <br /><br />
 </section>
 
-
-<!-- 
-    Again just a section to make it look pretty and not so empty
---> 
 <section class="portfolio-block photography">
     <div class="container">
         <div class="row no-gutters">
@@ -54,15 +39,6 @@ Buttons for all different pages of our application, all have a app.post/app,get 
 
 <br /><br />
 
-<!-- 
-this is where reviews show up, here reviewAlbum holds all information
-about not only album reviews, but also song reviews
-
-reviewAlbum holds our largest query (query_stream) which consists of the name of the user,
-album, the song/album reviewed, the time posted, etc.
-
--->
-
 <form class="pure-u-4-5 pure-form" style="width:80%; padding-left:18% " method="post" action="/post">
     <fieldset class="pure-g">
         <legend class="pure-u-1" style="color: white; background-color: black; text-align:center; font-size:2em;">LATEST
@@ -73,18 +49,11 @@ album, the song/album reviewed, the time posted, etc.
             
             <div class="pure-u-1 twizzle">
                 <div class="user-info">
-                    <!-- 
-                        This section is the individual section for every review where name is the username of the reviewer, music is the song or album, and posted is the time posted
-                    -->
                     <a href="/user/{{ name }}" style="text-decoration: none"><span class="name info"
                             style="color: blue;"><small>{{ name }} on {{music}}</small> </span></a>
                     <span class="when info" style="color: black;">{{ posted }}</span>
 
                 </div>
-                <!-- 
-                    Here is the actual content of the review (what the user wrote about this specific song or album)
-                    and the class name was kept the same out of respect.
-                -->
                 <div class="twizzle-content">
                     {{ content }}
                 </div>
@@ -108,8 +77,5 @@ album, the song/album reviewed, the time posted, etc.
             val = val * 1 + $btn.data('inc');
             return (val <= 0 ? '' : '+') + val;
         });
-
     });
-
-
 </script>
