@@ -6,7 +6,11 @@ This project was built using NodeJS, Express, and MySql.
 
 ## Installation
 
-1) Download the repo by clicking the green download button OR by typing git clone "https://github.com/BryAre/FansChoice.git"      on your terminal
+1) Download the repo by clicking the green download button OR by typing 
+
+**git clone "https://github.com/BryAre/FansChoice.git"**
+
+on your terminal
 
 1) Install [node.js](https://nodejs.org/en/)
 
